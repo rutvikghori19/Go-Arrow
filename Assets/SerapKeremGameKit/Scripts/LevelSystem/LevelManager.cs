@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using SerapKeremGameKit._Logging;
 using SerapKeremGameKit._Utilities;
+using _Game.Generation;
 
 namespace SerapKeremGameKit._Managers
 {
@@ -26,7 +27,18 @@ namespace SerapKeremGameKit._Managers
         [Title("Level Collections")]
         [ListDrawerSettings(Draggable = true, AlwaysExpanded = false)]
         [FormerlySerializedAs("_gameplayLevels")]
-        [SerializeField, Required] private Level[] _levels;
+        [SerializeField] private Level[] _levels;
+
+        [Title("Procedural Generation")]
+        [Tooltip("When enabled, levels are generated procedurally with increasing difficulty " +
+                 "(every generated level is guaranteed completable). The fixed _levels array is ignored.")]
+        [SerializeField] private bool _useProceduralGeneration = false;
+        [SerializeField] private LevelGenerator _levelGenerator;
+
+        /// <summary>Maximum number of procedurally generated levels.</summary>
+        public const int MaxGeneratedLevel = ProceduralLevelBuilder.MaxLevel;
+
+        public bool UsesProceduralGeneration => _useProceduralGeneration && _levelGenerator != null;
 
         public Level ActiveLevelInstance { get; private set; }
         public int ProcessedLevelIndex { get; private set; }
@@ -64,9 +76,30 @@ namespace SerapKeremGameKit._Managers
 
         public void LoadCurrentLevel()
         {
+            if (UsesProceduralGeneration && TryLoadGeneratedLevel())
+            {
+                return;
+            }
+
             var selection = ComputeLevelSelection();
             ProcessedLevelIndex = selection.targetIndex;
             InstantiateAndBegin(selection.selectedLevel);
+        }
+
+        private bool TryLoadGeneratedLevel()
+        {
+            int levelNumber = Mathf.Clamp(ActiveLevelNumber, 1, MaxGeneratedLevel);
+            Level generated = _levelGenerator.BuildLevel(levelNumber);
+
+            if (generated == null)
+            {
+                TraceLogger.LogWarning("Procedural generation failed; falling back to fixed levels.", this);
+                return false;
+            }
+
+            ProcessedLevelIndex = levelNumber;
+            BeginLevelInstance(generated);
+            return true;
         }
 
         private (Level selectedLevel, int targetIndex) ComputeLevelSelection()
@@ -104,7 +137,12 @@ namespace SerapKeremGameKit._Managers
 
         private void InstantiateAndBegin(Level targetLevel)
         {
-            ActiveLevelInstance = Instantiate(targetLevel);
+            BeginLevelInstance(Instantiate(targetLevel));
+        }
+
+        private void BeginLevelInstance(Level levelInstance)
+        {
+            ActiveLevelInstance = levelInstance;
             ActiveLevelInstance.Load();
             Time.timeScale = 1f;
             if (SerapKeremGameKit._InputSystem.InputHandler.Instance != null)
@@ -133,6 +171,12 @@ namespace SerapKeremGameKit._Managers
         public void RetryLevel()
         {
             TerminateCurrentLevel();
+
+            if (UsesProceduralGeneration && TryLoadGeneratedLevel())
+            {
+                return;
+            }
+
             var retryTarget = _levels[ProcessedLevelIndex - 1];
             InstantiateAndBegin(retryTarget);
         }
@@ -207,6 +251,8 @@ namespace SerapKeremGameKit._Managers
 
         private void PerformInitialValidation()
         {
+            if (UsesProceduralGeneration) return;
+
             if (_levels == null || _levels.Length == 0)
                 TraceLogger.LogWarning($"{name}: Levels array is not configured.", this);
         }

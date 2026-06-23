@@ -18,6 +18,7 @@ namespace SerapKeremGameKit._UI
         [SerializeField] private FailPanel _fail;
         [SerializeField] private SettingsPanel _settings;
         [SerializeField] private RetryPanel _retry;
+        [SerializeField] private LevelSelectPanel _levelSelect;
 
         [Header("Data")]
         [SerializeField] private LevelConfig _fallbackConfig;
@@ -47,11 +48,14 @@ namespace SerapKeremGameKit._UI
             if (_fail != null) _fail.SetUIRoot(this);
             if (_retry != null) _retry.SetUIRoot(this);
 
+            EnsureLevelSelectPanel();
+
             // Ensure startup state: only HUD hidden initially (will be shown in Start)
             if (_win != null) _win.HideImmediate();
             if (_fail != null) _fail.HideImmediate();
             if (_settings != null) _settings.HideImmediate();
             if (_retry != null) _retry.HideImmediate();
+            if (_levelSelect != null) _levelSelect.HideImmediate();
             if (_hud != null) _hud.HideImmediate();
         }
 
@@ -116,6 +120,51 @@ namespace SerapKeremGameKit._UI
             if (_fail != null) _fail.Hide(false);
             if (_settings != null) _settings.Hide(false);
             if (_retry != null) _retry.Hide(false);
+            if (_levelSelect != null) _levelSelect.Hide(false);
+        }
+
+        public void EnsureLevelSelectPanel()
+        {
+            if (_levelSelect != null)
+                return;
+
+            var go = new GameObject("LevelSelectPanel", typeof(RectTransform));
+            go.transform.SetParent(transform, false);
+            var rt = go.GetComponent<RectTransform>();
+            rt.anchorMin = Vector2.zero;
+            rt.anchorMax = Vector2.one;
+            rt.offsetMin = Vector2.zero;
+            rt.offsetMax = Vector2.zero;
+
+            _levelSelect = go.AddComponent<LevelSelectPanel>();
+            _levelSelect.SetUIRoot(this);
+            _levelSelect.HideImmediate();
+        }
+
+        public void OnOpenLevelSelect()
+        {
+            EnsureLevelSelectPanel();
+            if (_levelSelect == null)
+                return;
+
+            if (_settings != null) _settings.Hide(false);
+            if (_retry != null) _retry.Hide(false);
+            _levelSelect.Show();
+        }
+
+        public void OnLevelSelected(int levelNumber)
+        {
+            if (_levelSelect != null) _levelSelect.Hide(false);
+
+            if (LevelManager.Instance != null)
+                LevelManager.Instance.LoadLevel(levelNumber);
+
+            HideAll();
+            if (_hud != null)
+            {
+                _hud.Show(false);
+                _hud.SetLevelIndex(levelNumber - 1);
+            }
         }
 
         private void ShowWin()
@@ -194,6 +243,7 @@ namespace SerapKeremGameKit._UI
             if (_fail != null && _fail != screen) _fail.Hide(true);
             if (_settings != null && _settings != screen) _settings.Hide(true);
             if (_retry != null && _retry != screen) _retry.Hide(true);
+            if (_levelSelect != null && _levelSelect != screen) _levelSelect.Hide(true);
         }
 
         public void OnRestartRequested()

@@ -11,6 +11,7 @@ namespace SerapKeremGameKit._UI
         [SerializeField] private TextMeshProUGUI _timeText;
         [SerializeField] private Button _restartButton;
         [SerializeField] private Button _settingsButton;
+        [SerializeField] private Button _levelSelectButton;
         [SerializeField] private UIRootController _uiRoot;
         [SerializeField] private HeartPanel _heartPanel;
 
@@ -20,6 +21,31 @@ namespace SerapKeremGameKit._UI
         {
             if (_restartButton != null) _restartButton.BindOnClick(this, OnRestartClicked);
             if (_settingsButton != null) _settingsButton.BindOnClick(this, OnSettingsClicked);
+            EnsureLevelSelectButton();
+            if (_levelSelectButton != null) _levelSelectButton.BindOnClick(this, OnLevelSelectClicked);
+        }
+
+        void EnsureLevelSelectButton()
+        {
+            if (_levelSelectButton != null)
+                return;
+
+            Transform displayer = null;
+            foreach (var t in GetComponentsInChildren<Transform>(true))
+            {
+                if (t.name == "LevelDisplayer")
+                {
+                    displayer = t;
+                    break;
+                }
+            }
+
+            if (displayer == null)
+                return;
+
+            _levelSelectButton = displayer.GetComponent<Button>();
+            if (_levelSelectButton == null)
+                _levelSelectButton = displayer.gameObject.AddComponent<Button>();
         }
 
         public override void Show(bool playSound = true)
@@ -115,6 +141,11 @@ namespace SerapKeremGameKit._UI
         private void OnSettingsClicked()
         {
             if (_uiRoot != null) _uiRoot.OnOpenSettings();
+        }
+
+        private void OnLevelSelectClicked()
+        {
+            if (_uiRoot != null) _uiRoot.OnOpenLevelSelect();
         }
 
         public void SetUIRoot(UIRootController uiRoot)

@@ -31,7 +31,7 @@ namespace SerapKeremGameKit._EditorTools
 
                 int selected = 0;
                 EditorGUI.BeginChangeCheck();
-                selected = EditorGUILayout.Popup(0, _levelDisplayOptions, GUILayout.Width(140));
+                selected = EditorGUILayout.Popup(0, _levelDisplayOptions, GUILayout.Width(200));
                 if (EditorGUI.EndChangeCheck() && selected > 0)
                 {
                     int targetLevelNumber = selected;
@@ -69,17 +69,18 @@ namespace SerapKeremGameKit._EditorTools
 
         private static void EnsureCache(LevelManager lm)
         {
-            int gameplayCount = lm.GameplayLevels != null ? lm.GameplayLevels.Length : 0;
-            int total = gameplayCount;
+            int total = lm.TotalLevelCount;
             if (_levelDisplayOptions != null && _cachedTotalCount == total) return;
 
             _cachedTotalCount = total;
             _levelDisplayOptions = new string[total + 1];
             _levelDisplayOptions[0] = "Play From Level";
 
-            int idx = 1;
-            for (int i = 1; i <= gameplayCount; i++, idx++)
-                _levelDisplayOptions[idx] = $"{i} - Level";
+            for (int i = 1; i <= total; i++)
+            {
+                string suffix = i <= lm.HandcraftedLevelCount ? "Handcrafted" : "Procedural";
+                _levelDisplayOptions[i] = $"{i} - {suffix}";
+            }
         }
 
         private static void ShowGameViewNotification(string message)

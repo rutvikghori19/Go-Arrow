@@ -1,3 +1,4 @@
+using _Game.ProceduralLevels;
 using SerapKeremGameKit._LevelSystem;
 using SerapKeremGameKit._Singletons;
 using TriInspector;
@@ -28,12 +29,18 @@ namespace SerapKeremGameKit._Managers
         [FormerlySerializedAs("_gameplayLevels")]
         [SerializeField, Required] private Level[] _levels;
 
+        [Title("Procedural Levels")]
+        [SerializeField] private Level _proceduralLevelTemplate;
+        [SerializeField] private bool _useProceduralLevels = true;
+
         public Level ActiveLevelInstance { get; private set; }
         public int ProcessedLevelIndex { get; private set; }
 
         // Public accessors for external systems
         public Level[] GameplayLevels => _levels;
-        public int GameplayLevelCount => _levels != null ? _levels.Length : 0;
+        public int HandcraftedLevelCount => _levels != null ? _levels.Length : 0;
+        public int GameplayLevelCount => ProceduralLevelConstants.TotalLevelCount;
+        public int TotalLevelCount => ProceduralLevelConstants.TotalLevelCount;
 
         #endregion
 
@@ -64,47 +71,56 @@ namespace SerapKeremGameKit._Managers
 
         public void LoadCurrentLevel()
         {
-            var selection = ComputeLevelSelection();
-            ProcessedLevelIndex = selection.targetIndex;
-            InstantiateAndBegin(selection.selectedLevel);
+            int levelNumber = ProceduralLevelUtility.ClampLevelNumber(ActiveLevelNumber);
+            ActiveLevelNumber = levelNumber;
+            ProcessedLevelIndex = levelNumber;
+
+            if (ShouldUseProceduralLevel(levelNumber))
+                InstantiateProceduralAndBegin(levelNumber);
+            else
+                InstantiateAndBegin(_levels[levelNumber - 1]);
         }
 
-        private (Level selectedLevel, int targetIndex) ComputeLevelSelection()
+        bool ShouldUseProceduralLevel(int levelNumber)
         {
-            int currentProgress = ActiveLevelNumber;
-            return ResolveGameplaySelection(currentProgress);
+            if (!_useProceduralLevels || ResolveProceduralTemplate() == null)
+                return false;
+
+            if (ProceduralLevelUtility.IsHandcraftedLevel(levelNumber) && _levels != null &&
+                levelNumber <= _levels.Length)
+                return false;
+
+            return ProceduralLevelUtility.IsProceduralLevel(levelNumber);
         }
 
-        private (Level selectedLevel, int targetIndex) ResolveGameplaySelection(int adjustedProgress)
+        Level ResolveProceduralTemplate()
         {
-            int totalGameplayLevels = _levels.Length;
-            int calculatedIndex = ClampOrWrapIndex(adjustedProgress, totalGameplayLevels);
+            if (_proceduralLevelTemplate != null)
+                return _proceduralLevelTemplate;
 
-            return (_levels[calculatedIndex - 1], calculatedIndex);
+            return Resources.Load<Level>("Levels/Level_Base");
         }
 
-        private int ClampOrWrapIndex(int progressValue, int totalAvailable)
+        private void InstantiateProceduralAndBegin(int levelNumber)
         {
-            if (progressValue <= totalAvailable)
-                return progressValue;
+            var template = ResolveProceduralTemplate();
+            ActiveLevelInstance = Instantiate(template);
+            var host = ActiveLevelInstance.GetComponent<ProceduralLevelHost>();
+            if (host == null)
+                host = ActiveLevelInstance.gameObject.AddComponent<ProceduralLevelHost>();
 
-            if (_useRandomSelection)
-                return GetRandomIndex(totalAvailable);
-
-            return WrapIndex(progressValue, totalAvailable);
-        }
-
-        private int GetRandomIndex(int maxRange) => Random.Range(1, maxRange + 1);
-
-        private int WrapIndex(int value, int wrapLimit)
-        {
-            int remainder = value % wrapLimit;
-            return remainder == 0 ? wrapLimit : remainder;
+            host.Build(levelNumber);
+            BeginLoadedLevel();
         }
 
         private void InstantiateAndBegin(Level targetLevel)
         {
             ActiveLevelInstance = Instantiate(targetLevel);
+            BeginLoadedLevel();
+        }
+
+        void BeginLoadedLevel()
+        {
             ActiveLevelInstance.Load();
             Time.timeScale = 1f;
             if (SerapKeremGameKit._InputSystem.InputHandler.Instance != null)
@@ -133,14 +149,29 @@ namespace SerapKeremGameKit._Managers
         public void RetryLevel()
         {
             TerminateCurrentLevel();
-            var retryTarget = _levels[ProcessedLevelIndex - 1];
-            InstantiateAndBegin(retryTarget);
+            if (ShouldUseProceduralLevel(ProcessedLevelIndex))
+                InstantiateProceduralAndBegin(ProcessedLevelIndex);
+            else
+                InstantiateAndBegin(_levels[ProcessedLevelIndex - 1]);
         }
 
         public void RestartLevel()
         {
             StateManager.Instance.SetOnRestart();
             RetryLevel();
+        }
+
+        public void LoadLevel(int levelNumber)
+        {
+            TerminateCurrentLevel();
+            levelNumber = ProceduralLevelUtility.ClampLevelNumber(levelNumber);
+            ActiveLevelNumber = levelNumber;
+            ProcessedLevelIndex = levelNumber;
+
+            if (ShouldUseProceduralLevel(levelNumber))
+                InstantiateProceduralAndBegin(levelNumber);
+            else
+                InstantiateAndBegin(_levels[levelNumber - 1]);
         }
 
         public void CleanCurrentLevel()
@@ -153,7 +184,8 @@ namespace SerapKeremGameKit._Managers
         public void IncreaseLevelNumber()
         {
             TerminateCurrentLevel();
-            ActiveLevelNumber++;
+            if (ActiveLevelNumber < TotalLevelCount)
+                ActiveLevelNumber++;
         }
 
         private void TerminateCurrentLevel()
@@ -231,11 +263,17 @@ namespace SerapKeremGameKit._Managers
 
         public Level GetLevelByNumber(int levelNumber)
         {
-            int gameplayIndex = levelNumber;
+            levelNumber = ProceduralLevelUtility.ClampLevelNumber(levelNumber);
 
-            if (gameplayIndex <= 0 || gameplayIndex > _levels.Length) return null;
+            if (ProceduralLevelUtility.IsHandcraftedLevel(levelNumber) && _levels != null && levelNumber <= _levels.Length)
+                return _levels[levelNumber - 1];
 
-            return _levels[gameplayIndex - 1];
+            return ResolveProceduralTemplate();
+        }
+
+        public bool IsCurrentLevelProcedural()
+        {
+            return ShouldUseProceduralLevel(ProcessedLevelIndex);
         }
 
         #region Utility & Validation Methods

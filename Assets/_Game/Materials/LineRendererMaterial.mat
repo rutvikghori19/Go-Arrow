@@ -165,9 +165,9 @@ Material:
     - _ReflectionMapType: 0
     - _ReflectionSmoothness: 0.5
     - _RenderingMode: 0
-    - _RimMax: 0.85
-    - _RimMin: 0.6
-    - _RimStrength: 0.5
+    - _RimMin: 0.55
+    - _RimMax: 0.9
+    - _RimStrength: 0.45
     - _ShadowColorLightAtten: 1
     - _SingleIndirectColor: 0
     - _Smoothness: 0.5
@@ -189,7 +189,7 @@ Material:
     - _TCP2_STYLIZED_FRESNEL: 0
     - _UVSec: 0
     - _UseAlphaTest: 0
-    - _UseEmission: 0
+    - _UseEmission: 1
     - _UseFresnelReflections: 1
     - _UseMatCap: 0
     - _UseMatCapMask: 0
@@ -198,7 +198,7 @@ Material:
     - _UseOcclusion: 0
     - _UseOutline: 1
     - _UseReflections: 0
-    - _UseRim: 0
+    - _UseRim: 1
     - _UseRimLightMask: 1
     - _UseShadowTexture: 0
     - _UseSpecular: 0

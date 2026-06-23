@@ -1,3 +1,4 @@
+using _Game.Theme;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -64,7 +65,16 @@ namespace SerapKeremGameKit._UI
         private void Initialize()
         {
             if (_isInitialized) return;
+            ApplyNeonHudStyle();
             _isInitialized = true;
+        }
+
+        void ApplyNeonHudStyle()
+        {
+            if (_levelText != null)
+                _levelText.color = NeonTheme.UiHudText;
+            if (_timeText != null)
+                _timeText.color = NeonTheme.UiHudText;
         }
 
         protected override void OnDestroy()

@@ -2,6 +2,7 @@ using UnityEngine;
 using SerapKeremGameKit._Logging;
 using SerapKeremGameKit._Audio;
 using SerapKeremGameKit._Haptics;
+using _Game.Theme;
 using _Game.UI;
 
 namespace _Game.Line
@@ -79,6 +80,7 @@ namespace _Game.Line
             InjectDependencies();
             SubscribeToEvents();
             AddHeadToMaterialHandler();
+            ApplyNeonTheme();
 
             IsInitialized = true;
 
@@ -101,6 +103,24 @@ namespace _Game.Line
             if (_materialHandler == null || _lineHeadSpriteRenderer == null) return;
 
             _materialHandler.AddRenderer(_lineHeadSpriteRenderer);
+        }
+
+        private void ApplyNeonTheme()
+        {
+            var seed = GetInstanceID() ^ name.GetHashCode();
+            var neonColor = NeonTheme.PickArrowColor(seed);
+
+            if (_materialHandler != null)
+            {
+                _materialHandler.SetThemeColor(neonColor);
+                return;
+            }
+
+            if (_lineRenderer != null)
+                NeonTheme.ApplyNeonLineRenderer(_lineRenderer, neonColor);
+
+            if (_lineHeadSpriteRenderer != null)
+                NeonTheme.ApplyNeonSprite(_lineHeadSpriteRenderer, neonColor);
         }
 
         private void InitializeSnapFixer()

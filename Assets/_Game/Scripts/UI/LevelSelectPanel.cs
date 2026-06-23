@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using _Game.Theme;
 using SerapKeremGameKit._Managers;
 using SerapKeremGameKit._UI;
 using TMPro;
@@ -70,15 +71,15 @@ namespace _Game.UI
 
             var panel = CreateRect("Panel", overlay, new Vector2(0.5f, 0.5f), new Vector2(900f, 1200f));
             var panelImage = panel.gameObject.AddComponent<Image>();
-            panelImage.color = new Color(0.15f, 0.45f, 0.85f, 1f);
+            panelImage.color = NeonTheme.UiPanel;
 
-            var title = CreateText("Title", panel, "Select Level", 56, new Vector2(0f, 520f), new Vector2(800f, 80f));
+            var title = CreateText("Title", panel, "Select Level", 56, new Vector2(0f, 520f), new Vector2(800f, 80f), NeonTheme.UiHudText);
 
             var closeGo = CreateRect("CloseButton", panel, new Vector2(0.5f, 0.5f), new Vector2(72f, 72f));
             closeGo.anchoredPosition = new Vector2(380f, 520f);
             _closeButton = closeGo.gameObject.AddComponent<Button>();
             var closeImg = closeGo.gameObject.AddComponent<Image>();
-            closeImg.color = new Color(0.9f, 0.3f, 0.25f, 1f);
+            closeImg.color = NeonTheme.UiAccent;
             CreateText("X", closeGo, "X", 40, Vector2.zero, closeGo.sizeDelta);
 
             var scrollGo = CreateRect("ScrollView", panel, new Vector2(0.5f, 0.5f), new Vector2(820f, 980f));
@@ -122,15 +123,15 @@ namespace _Game.UI
                 var cell = CreateRect($"Level_{level}", _contentRoot, new Vector2(0.5f, 0.5f), new Vector2(_cellSize, _cellSize));
                 var image = cell.gameObject.AddComponent<Image>();
                 image.color = level == current
-                    ? new Color(0.2f, 0.75f, 0.35f, 1f)
-                    : new Color(0.95f, 0.95f, 0.95f, 1f);
+                    ? NeonTheme.UiCellActive
+                    : NeonTheme.UiCell;
 
                 var button = cell.gameObject.AddComponent<Button>();
                 button.targetGraphic = image;
                 button.onClick.AddListener(() => OnLevelClicked(captured));
                 _buttons.Add(button);
 
-                var textColor = level == current ? Color.white : new Color(0.1f, 0.2f, 0.45f, 1f);
+                var textColor = level == current ? Color.white : NeonTheme.UiText;
                 CreateText("Label", cell, level.ToString(), 42, Vector2.zero, cell.sizeDelta, textColor);
             }
 
@@ -151,12 +152,12 @@ namespace _Game.UI
 
                 bool isCurrent = i + 1 == current;
                 image.color = isCurrent
-                    ? new Color(0.2f, 0.75f, 0.35f, 1f)
-                    : new Color(0.95f, 0.95f, 0.95f, 1f);
+                    ? NeonTheme.UiCellActive
+                    : NeonTheme.UiCell;
 
                 var label = _buttons[i].GetComponentInChildren<TextMeshProUGUI>();
                 if (label != null)
-                    label.color = isCurrent ? Color.white : new Color(0.1f, 0.2f, 0.45f, 1f);
+                    label.color = isCurrent ? Color.white : NeonTheme.UiText;
             }
         }
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using _Game.Theme;
 
 namespace _Game.Line
 {
@@ -10,7 +11,7 @@ namespace _Game.Line
         [SerializeField] private List<Component> _renderers = new List<Component>();
 
         [Header("Color Settings")]
-        [SerializeField] private Color _failureColor = Color.red;
+        [SerializeField] private Color _failureColor = new Color(1f, 0.15f, 0.35f, 1f);
         [SerializeField] private float _failureColorDuration = 0.5f;
 
         private Dictionary<Component, Color> _originalColors = new Dictionary<Component, Color>();
@@ -36,15 +37,11 @@ namespace _Game.Line
         {
             if (renderer is LineRenderer lineRenderer)
             {
-                if (lineRenderer.sharedMaterial != null)
-                {
+                if (lineRenderer.sharedMaterial != null && lineRenderer.material == lineRenderer.sharedMaterial)
                     lineRenderer.material = new Material(lineRenderer.sharedMaterial);
-                }
-                
+
                 if (lineRenderer.material != null)
-                {
-                    _originalColors[renderer] = lineRenderer.material.color;
-                }
+                    _originalColors[renderer] = lineRenderer.startColor;
             }
             else if (renderer is SpriteRenderer spriteRenderer)
             {
@@ -71,6 +68,28 @@ namespace _Game.Line
             _colorResetCoroutine = null;
         }
 
+        public void SetThemeColor(Color color)
+        {
+            foreach (var renderer in _renderers)
+            {
+                if (renderer == null) continue;
+                ApplyThemeColor(renderer, color);
+                _originalColors[renderer] = color;
+            }
+        }
+
+        private static void ApplyThemeColor(Component renderer, Color color)
+        {
+            if (renderer is LineRenderer lineRenderer)
+            {
+                NeonTheme.ApplyNeonLineRenderer(lineRenderer, color);
+            }
+            else if (renderer is SpriteRenderer spriteRenderer)
+            {
+                NeonTheme.ApplyNeonSprite(spriteRenderer, color);
+            }
+        }
+
         public void ResetToOriginalColors()
         {
             if (_colorResetCoroutine != null)
@@ -85,7 +104,7 @@ namespace _Game.Line
 
                 if (kvp.Key is LineRenderer lineRenderer && lineRenderer.material != null)
                 {
-                    lineRenderer.material.color = kvp.Value;
+                    ApplyThemeColor(lineRenderer, kvp.Value);
                 }
                 else if (kvp.Key is SpriteRenderer spriteRenderer)
                 {
@@ -108,18 +127,7 @@ namespace _Game.Line
             foreach (var renderer in _renderers)
             {
                 if (renderer == null) continue;
-
-                if (renderer is LineRenderer lineRenderer)
-                {
-                    if (lineRenderer.material != null)
-                    {
-                        lineRenderer.material.color = color;
-                    }
-                }
-                else if (renderer is SpriteRenderer spriteRenderer)
-                {
-                    spriteRenderer.color = color;
-                }
+                ApplyThemeColor(renderer, color);
             }
         }
 

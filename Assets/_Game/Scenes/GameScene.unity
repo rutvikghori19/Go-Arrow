@@ -530,7 +530,7 @@ Light:
   serializedVersion: 11
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 2
+  m_Intensity: 0.55
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -891,7 +891,7 @@ MonoBehaviour:
   priority: 0
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: 10fc4df2da32a41aaa32d77bc913491c, type: 2}
+  sharedProfile: {fileID: 11400000, guid: c8f4e2a19b3d4f648a0e7c5d92b1f6a3, type: 2}
 --- !u!4 &832575519
 Transform:
   m_ObjectHideFlags: 0
@@ -1430,6 +1430,18 @@ Transform:
   - {fileID: 6703622152594652546}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2119728499476500049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7040384412871904379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48d64a537a3dfd64d9ccbf45c895bfa5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2759513138988275785
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1492,15 +1504,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4426761206483752972, guid: 6ada64ac7a7514849b368d274d552132, type: 3}
       propertyPath: m_BackGroundColor.b
-      value: 1
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: 4426761206483752972, guid: 6ada64ac7a7514849b368d274d552132, type: 3}
       propertyPath: m_BackGroundColor.g
-      value: 1
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 4426761206483752972, guid: 6ada64ac7a7514849b368d274d552132, type: 3}
       propertyPath: m_BackGroundColor.r
-      value: 1
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 5768790214394524418, guid: 6ada64ac7a7514849b368d274d552132, type: 3}
       propertyPath: _padding
@@ -2539,6 +2551,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2119728499476500048}
+  - component: {fileID: 2119728499476500049}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged

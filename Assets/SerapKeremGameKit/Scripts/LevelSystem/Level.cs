@@ -8,6 +8,7 @@ using TriInspector;
 using UnityEngine;
 using Array2DEditor;
 using _Game.Line;
+using _Game.Theme;
 using _Game.UI;
 
 
@@ -52,6 +53,7 @@ namespace SerapKeremGameKit._LevelSystem
 
         private void Initialize()
         {
+            NeonTheme.ApplyLevelBackground(transform);
             InitializeCamera();
             InitializeLines();
         }
@@ -83,6 +85,11 @@ namespace SerapKeremGameKit._LevelSystem
             }
 
             CameraManager.Instance.FitCameraToLines(_linesParent);
+
+            var cam = CameraManager.Instance.GetComponentInChildren<Camera>(true);
+            if (cam != null)
+                NeonTheme.ApplyCamera(cam);
+            NeonTheme.ApplyPostProcessing();
         }
 
         public virtual void Play()

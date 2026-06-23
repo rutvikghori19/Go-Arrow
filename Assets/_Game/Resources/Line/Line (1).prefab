@@ -323,8 +323,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderers:
-  - {fileID: 8852158018286561598}
-  - {fileID: 6705024964587633368}
+  - {fileID: 5703179247697745139}
+  - {fileID: 4594035126425610268}
   _failureColor: {r: 1, g: 0, b: 0, a: 1}
   _failureColorDuration: 1
 --- !u!114 &1088355798733759430

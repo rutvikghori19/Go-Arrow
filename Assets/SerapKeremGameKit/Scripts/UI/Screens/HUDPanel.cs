@@ -12,153 +12,140 @@ namespace SerapKeremGameKit._UI
         [SerializeField] private TextMeshProUGUI _timeText;
         [SerializeField] private Button _restartButton;
         [SerializeField] private Button _settingsButton;
-        [SerializeField] private Button _levelSelectButton;
-        [SerializeField] private UIRootController _uiRoot;
+        [SerializeField] private GameUIManager _uiRoot;
         [SerializeField] private HeartPanel _heartPanel;
 
-        private bool _isInitialized = false;
+        bool _isInitialized;
 
-        private void Awake()
+        void Awake()
         {
             if (_restartButton != null) _restartButton.BindOnClick(this, OnRestartClicked);
             if (_settingsButton != null) _settingsButton.BindOnClick(this, OnSettingsClicked);
-            EnsureLevelSelectButton();
-            if (_levelSelectButton != null) _levelSelectButton.BindOnClick(this, OnLevelSelectClicked);
+            ResolveReferences();
         }
 
-        void EnsureLevelSelectButton()
+        void ResolveReferences()
         {
-            if (_levelSelectButton != null)
-                return;
-
-            Transform displayer = null;
-            foreach (var t in GetComponentsInChildren<Transform>(true))
+            if (_levelText == null)
             {
-                if (t.name == "LevelDisplayer")
+                foreach (var tmp in GetComponentsInChildren<TextMeshProUGUI>(true))
                 {
-                    displayer = t;
-                    break;
+                    if (tmp.name.Contains("Level"))
+                    {
+                        _levelText = tmp;
+                        break;
+                    }
                 }
             }
 
-            if (displayer == null)
-                return;
+            if (_timeText == null)
+            {
+                foreach (var tmp in GetComponentsInChildren<TextMeshProUGUI>(true))
+                {
+                    if (tmp.name.Contains("Time"))
+                    {
+                        _timeText = tmp;
+                        break;
+                    }
+                }
+            }
 
-            _levelSelectButton = displayer.GetComponent<Button>();
-            if (_levelSelectButton == null)
-                _levelSelectButton = displayer.gameObject.AddComponent<Button>();
+            if (_heartPanel == null)
+                _heartPanel = FindFirstObjectByType<HeartPanel>();
         }
 
         public override void Show(bool playSound = true)
         {
             base.Show(playSound);
-            
+
             if (!_isInitialized)
-            {
                 Initialize();
-            }
-            
+
             SubscribeToLivesManager();
             InitializeHeartPanel();
         }
 
-        private void Initialize()
+        void Initialize()
         {
-            if (_isInitialized) return;
-            ApplyNeonHudStyle();
-            _isInitialized = true;
-        }
+            if (_isInitialized)
+                return;
 
-        void ApplyNeonHudStyle()
-        {
-            if (_levelText != null)
-                _levelText.color = NeonTheme.UiHudText;
-            if (_timeText != null)
-                _timeText.color = NeonTheme.UiHudText;
+            ResolveReferences();
+            NeonHudBuilder.Apply(this);
+            _isInitialized = true;
         }
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
             UnsubscribeFromLivesManager();
-            // Auto-unsubscribe handled by ButtonExtensions
         }
 
-        private void SubscribeToLivesManager()
+        void SubscribeToLivesManager()
         {
             if (_uiRoot != null && _uiRoot.LivesManagerInstance != null)
-            {
                 _uiRoot.LivesManagerInstance.OnLivesChanged += HandleLivesChanged;
-            }
         }
 
-        private void UnsubscribeFromLivesManager()
+        void UnsubscribeFromLivesManager()
         {
             if (_uiRoot != null && _uiRoot.LivesManagerInstance != null)
-            {
                 _uiRoot.LivesManagerInstance.OnLivesChanged -= HandleLivesChanged;
-            }
         }
 
-        private void InitializeHeartPanel()
+        void InitializeHeartPanel()
         {
-            if (_heartPanel != null)
-            {
-                _heartPanel.Initialize();
-                if (_uiRoot != null && _uiRoot.LivesManagerInstance != null)
-                {
-                    _heartPanel.UpdateHearts(_uiRoot.LivesManagerInstance.CurrentLives);
-                }
-            }
+            if (_heartPanel == null)
+                return;
+
+            _heartPanel.Initialize();
+            if (_uiRoot != null && _uiRoot.LivesManagerInstance != null)
+                _heartPanel.UpdateHearts(_uiRoot.LivesManagerInstance.CurrentLives);
         }
 
-        private void HandleLivesChanged(int currentLives)
+        void HandleLivesChanged(int currentLives)
         {
             if (_heartPanel != null)
-            {
                 _heartPanel.UpdateHearts(currentLives);
-            }
         }
 
         public void SetLevelIndex(int levelIndex)
         {
             if (_levelText != null)
-                _levelText.text = $"Level {levelIndex + 1}";
+                _levelText.text = $"LEVEL {levelIndex + 1}";
         }
 
         public void UpdateTimeDisplay(float remainingTime)
         {
             if (_timeText != null)
-            {
                 _timeText.text = FormatTime(remainingTime);
-            }
         }
 
-        private static string FormatTime(float seconds)
+        static string FormatTime(float seconds)
         {
             int totalSeconds = Mathf.Max(0, Mathf.FloorToInt(seconds));
             int minutes = totalSeconds / 60;
             int remainingSeconds = totalSeconds % 60;
-
             return $"{minutes:D2}:{remainingSeconds:D2}";
         }
 
-        private void OnRestartClicked()
+        void OnRestartClicked()
         {
-            if (_uiRoot != null) _uiRoot.OnRestartRequested();
+            if (_uiRoot != null)
+                _uiRoot.OnRestartRequested();
         }
 
-        private void OnSettingsClicked()
+        void OnSettingsClicked()
         {
-            if (_uiRoot != null) _uiRoot.OnOpenSettings();
+            if (_uiRoot != null)
+                _uiRoot.OnOpenSettings();
         }
 
-        private void OnLevelSelectClicked()
-        {
-            if (_uiRoot != null) _uiRoot.OnOpenLevelSelect();
-        }
+        public void PressRestart() => OnRestartClicked();
 
-        public void SetUIRoot(UIRootController uiRoot)
+        public void PressSettings() => OnSettingsClicked();
+
+        public void SetUIRoot(GameUIManager uiRoot)
         {
             _uiRoot = uiRoot;
         }

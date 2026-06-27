@@ -1,0 +1,512 @@
+[
+  {
+    "file": "Panels/Panel_Small_Cyan.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Panels/Panel_Small_Pink.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Panels/Panel_Medium_Cyan.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Panels/Panel_Medium_Pink.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Panels/Panel_Large_Cyan.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Panels/Panel_Large_Pink.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Panels/Panel_ExtraLarge_Cyan.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Panels/Panel_ExtraLarge_Pink.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Panels/Popup_Small.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Panels/Popup_Medium.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Panels/Popup_Large.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Buttons/Button_Long_Cyan.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Buttons/Button_Medium_Cyan.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Buttons/Button_Small_Cyan.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Buttons/Button_Square_Cyan.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Buttons/Button_Long_Ghost_Cyan.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Buttons/Button_Long_Pink.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Buttons/Button_Medium_Pink.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Buttons/Button_Small_Pink.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Buttons/Button_Square_Pink.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Buttons/Button_Long_Ghost_Pink.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Buttons/Button_Long_Green.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Buttons/Button_Medium_Green.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Buttons/Button_Small_Green.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Buttons/Button_Square_Green.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Buttons/Button_Long_Ghost_Green.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Buttons/Button_Long_Yellow.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Buttons/Button_Medium_Yellow.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Buttons/Button_Small_Yellow.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Buttons/Button_Square_Yellow.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Buttons/Button_Long_Ghost_Yellow.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "Icons/Icon_Close.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Icons/Icon_Refresh.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Icons/Icon_Settings.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Icons/Icon_Sound.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Icons/Icon_Haptics.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Icons/Icon_Warning.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "HeartsStars/Icon_Heart_Full.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "HeartsStars/Icon_Heart_Empty.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "HeartsStars/Icon_Heart_Half.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "HeartsStars/Icon_Star_Full.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "HeartsStars/Icon_Star_Empty.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Icons/Icon_Arrow_Right.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Icons/Icon_Arrow_Left.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Icons/Icon_Arrow_Up.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Icons/Icon_Arrow_Down.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Icons/Icon_Circle.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Icons/Icon_Check.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Icons/Icon_Lock.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Icons/Icon_Unlock.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Toggles/Toggle_BG_Off.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Toggles/Toggle_BG_On.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Toggles/Toggle_Knob.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Toggles/Checkbox_Off.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Toggles/Checkbox_On.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "ProgressBars/Progress_BG.png",
+    "nineSlice": 20,
+    "trimmed": false
+  },
+  {
+    "file": "ProgressBars/Progress_Fill_Cyan.png",
+    "nineSlice": 20,
+    "trimmed": false
+  },
+  {
+    "file": "ProgressBars/Progress_Fill_Pink.png",
+    "nineSlice": 20,
+    "trimmed": false
+  },
+  {
+    "file": "ProgressBars/Progress_Fill_Green.png",
+    "nineSlice": 20,
+    "trimmed": false
+  },
+  {
+    "file": "ProgressBars/Progress_Fill_Yellow.png",
+    "nineSlice": 20,
+    "trimmed": false
+  },
+  {
+    "file": "LevelCells/Level_Cell_Locked.png",
+    "nineSlice": 20,
+    "trimmed": false
+  },
+  {
+    "file": "LevelCells/Level_Cell_Unlocked.png",
+    "nineSlice": 20,
+    "trimmed": false
+  },
+  {
+    "file": "LevelCells/Level_Cell_Selected.png",
+    "nineSlice": 20,
+    "trimmed": false
+  },
+  {
+    "file": "Frames/Frame_Thin_Cyan.png",
+    "nineSlice": 16,
+    "trimmed": false
+  },
+  {
+    "file": "Frames/Frame_Thin_Pink.png",
+    "nineSlice": 16,
+    "trimmed": false
+  },
+  {
+    "file": "Frames/Frame_Thin_Green.png",
+    "nineSlice": 16,
+    "trimmed": false
+  },
+  {
+    "file": "Frames/Frame_Thick_Cyan.png",
+    "nineSlice": 16,
+    "trimmed": false
+  },
+  {
+    "file": "Frames/Corner_TL.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Frames/Corner_TR.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Frames/Corner_BL.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Frames/Corner_BR.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Frames/Divider_H.png",
+    "nineSlice": 12,
+    "trimmed": false
+  },
+  {
+    "file": "Frames/Divider_V.png",
+    "nineSlice": 12,
+    "trimmed": false
+  },
+  {
+    "file": "HUD/HUD_Frame.png",
+    "nineSlice": 24,
+    "trimmed": false
+  },
+  {
+    "file": "HUD/HUD_Circle.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "HUD/HUD_Bar.png",
+    "nineSlice": 16,
+    "trimmed": false
+  },
+  {
+    "file": "Arrows/Arrow_Right.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Arrows/Arrow_Left.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Arrows/Arrow_Up.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Arrows/Arrow_Down.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Arrows/Arrow_DoubleRight.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Badges/Badge_Cyan.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Badges/Badge_Pink.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Badges/Badge_Green.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Badges/Marker_Diamond.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Badges/Marker_Triangle.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Sliders/Slider_Track.png",
+    "nineSlice": 20,
+    "trimmed": false
+  },
+  {
+    "file": "Sliders/Slider_Knob.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Effects/Glow_Cyan.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Effects/Glow_Pink.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Effects/Glow_Green.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Effects/Glow_Yellow.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Effects/Glow_Purple.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Effects/Light_Streak.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Effects/Sparkle.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Decorations/Deco_Border_Bottom.png",
+    "nineSlice": 20,
+    "trimmed": false
+  },
+  {
+    "file": "Decorations/Deco_Circuit_01.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Decorations/Deco_Dots.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Misc/Mask_Round.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Misc/Shadow_Soft.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Misc/Shadow_Hard.png",
+    "nineSlice": 0,
+    "trimmed": true
+  },
+  {
+    "file": "Misc/Highlight.png",
+    "nineSlice": 0,
+    "trimmed": true
+  }
+]

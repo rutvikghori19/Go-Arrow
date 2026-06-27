@@ -1,3 +1,4 @@
+using _Game.UI;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -17,7 +18,7 @@ namespace SerapKeremGameKit._UI
         [SerializeField] private TextMeshProUGUI _coinText;
         [SerializeField] private TextMeshProUGUI _totalCoinText;
         [SerializeField] private Button _nextButton;
-        [SerializeField] private UIRootController _uiRoot;
+        [SerializeField] private GameUIManager _uiRoot;
         [SerializeField] private CoinFlyAnimator _coinFly;
         [SerializeField] private RectTransform _totalCoinTarget;
 
@@ -40,7 +41,7 @@ namespace SerapKeremGameKit._UI
 			}
 		}
 
-        public void Setup(int stars, int rewardedCoins, int totalCoins, UIRootController uiRoot)
+        public void Setup(int stars, int rewardedCoins, int totalCoins, GameUIManager uiRoot)
         {
             SetStars(stars);
             if (_coinText != null) _coinText.text = rewardedCoins.ToString();
@@ -59,6 +60,11 @@ namespace SerapKeremGameKit._UI
             if (_star2 != null) _star2.SetActive(count >= 2);
             if (_star3 != null) _star3.SetActive(count >= 3);
             if (_starZeroIcon != null) _starZeroIcon.SetActive(count == 0);
+        }
+
+        public void PressNext()
+        {
+            OnNextClicked();
         }
 
         private void OnNextClicked()
@@ -81,7 +87,7 @@ namespace SerapKeremGameKit._UI
             if (_uiRoot != null) _uiRoot.ProceedNextLevelAfterReward(_pendingReward);
         }
 
-		public void SetUIRoot(UIRootController uiRoot)
+		public void SetUIRoot(GameUIManager uiRoot)
 		{
 			_uiRoot = uiRoot;
 		}

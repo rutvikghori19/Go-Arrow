@@ -1,0 +1,29 @@
+{
+  "name": "Go-Arrow Neon UI",
+  "referenceResolution": { "width": 1080, "height": 1920 },
+  "bannerAdHeight": 150,
+  "hudHeaderHeight": 128,
+  "colors": {
+    "background": "#020208",
+    "panelFill": "#0F0A1F",
+    "cellFill": "#1A1429",
+    "cellActive": "#0DBFF2",
+    "text": "#BFD9FF",
+    "hudText": "#33F2FF",
+    "cyanBorder": "#1AE6FF",
+    "magentaBorder": "#FF33BF",
+    "success": "#59FF59",
+    "fail": "#FF4073",
+    "accent": "#FF33BF"
+  },
+  "buttons": {
+    "mainMenu": { "width": 620, "height": 110 },
+    "dialog": { "width": 620, "height": 96 },
+    "hudCircle": { "diameter": 88 }
+  },
+  "logo": {
+    "width": 920,
+    "height": 340,
+    "resourcePath": "UI/GoArrowLogo"
+  }
+}

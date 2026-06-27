@@ -8,7 +8,7 @@ namespace _Game.UI
     public class LivesManager : MonoSingleton<LivesManager>
     {
         [Header("Lives Settings")]
-        [SerializeField] private int _maxLives = 5;
+        [SerializeField] private int _maxLives = 3;
         
         private int _currentLives;
         private int _lastLifeLossFrame = -1;

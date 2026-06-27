@@ -1,0 +1,43 @@
+{
+  "name": "Go-Arrow Neon UI Kit",
+  "version": "1.0.0",
+  "pixelsPerUnit": 100,
+  "referenceResolution": {
+    "width": 1080,
+    "height": 1920
+  },
+  "colors": {
+    "cyan": "#25F5FF",
+    "cyanBright": "#77FFFF",
+    "pink": "#FF2FB5",
+    "pinkBright": "#FF71D0",
+    "green": "#8DFF32",
+    "greenBright": "#BFFF63",
+    "yellow": "#FFE84D",
+    "orange": "#FFC43A",
+    "purple": "#B44BFF",
+    "panelBg": "#0B1018",
+    "darkBg": "#05070A",
+    "white": "#FFFFFF",
+    "text": "#BFD9FF"
+  },
+  "legacyThemeMapping": {
+    "background": "#020208",
+    "panelFill": "#0F0A1F",
+    "cyanBorder": "#33F2FF",
+    "magentaBorder": "#FF33BF",
+    "success": "#59FF59",
+    "fail": "#FF4073"
+  },
+  "nineSliceDefault": 24,
+  "importSettings": {
+    "textureType": "Sprite (2D and UI)",
+    "spriteMode": "Single",
+    "pixelsPerUnit": 100,
+    "filterMode": "Point",
+    "compression": "None",
+    "generateMipMaps": false,
+    "wrapMode": "Clamp",
+    "alphaIsTransparency": true
+  }
+}

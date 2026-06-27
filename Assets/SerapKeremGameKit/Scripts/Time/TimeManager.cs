@@ -1,3 +1,4 @@
+using _Game.UI;
 using SerapKeremGameKit._Logging;
 using SerapKeremGameKit._Singletons;
 using System.Collections;
@@ -18,7 +19,7 @@ namespace SerapKeremGameKit._Time
         private Coroutine _countdownCoroutine;
         private System.Action<float> _onTimeUpdated;
         private System.Action _onTimeExpired;
-        private UIRootController _uiRootController;
+        private GameUIManager _uiRootController;
 
         public float RemainingTime => _remainingTime;
         public bool IsTimerRunning => _countdownCoroutine != null;
@@ -36,7 +37,7 @@ namespace SerapKeremGameKit._Time
 
         private void InitializeUIReference()
         {
-            _uiRootController = FindFirstObjectByType<UIRootController>();
+            _uiRootController = FindFirstObjectByType<GameUIManager>();
         }
 
         public void SetTargetFrameRate(int fps)

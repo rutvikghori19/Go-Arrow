@@ -1,0 +1,23 @@
+# Go-Arrow Neon UI Kit — Color Reference
+# Use these hex values in Unity (ColorUtility.TryParseHtmlString) or TMP styles.
+
+Primary Cyan       #25F5FF    rgb(37, 245, 255)
+Bright Cyan        #77FFFF    rgb(119, 255, 255)
+Primary Pink       #FF2FB5    rgb(255, 47, 181)
+Bright Pink        #FF71D0    rgb(255, 113, 208)
+Neon Green         #8DFF32    rgb(141, 255, 50)
+Bright Green       #BFFF63    rgb(191, 255, 99)
+Neon Yellow        #FFE84D    rgb(255, 232, 77)
+Orange Glow        #FFC43A    rgb(255, 196, 58)
+Purple Neon        #B44BFF    rgb(180, 75, 255)
+Dark Background    #05070A    rgb(5, 7, 10)
+Panel Background   #0B1018    rgb(11, 16, 24)
+UI Text            #BFD9FF    rgb(191, 217, 255)
+
+## Legacy Go-Arrow theme (UIThemePack/theme-colors.json)
+Screen background  #020208
+Panel fill         #0F0A1F
+HUD / cyan border  #33F2FF
+Magenta accent     #FF33BF
+Success / win      #59FF59
+Fail / lose        #FF4073

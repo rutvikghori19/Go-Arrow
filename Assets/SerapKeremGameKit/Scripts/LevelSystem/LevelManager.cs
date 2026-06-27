@@ -1,4 +1,5 @@
 using _Game.ProceduralLevels;
+using _Game.UI;
 using SerapKeremGameKit._LevelSystem;
 using SerapKeremGameKit._Singletons;
 using TriInspector;
@@ -56,12 +57,25 @@ namespace SerapKeremGameKit._Managers
 
         void Start()
         {
+            if (!GameSessionBootstrap.ShouldStartLevelOnLoad)
+                return;
+
             StartCurrentLevelInstance();
         }
 
         public void StartCurrentLevelInstance()
         {
             ConfigureEnvironment();
+
+            if (GameSessionBootstrap.PendingLevelNumber > 0)
+            {
+                int level = GameSessionBootstrap.PendingLevelNumber;
+                GameSessionBootstrap.ClearAfterLoad();
+                LoadLevel(level);
+                return;
+            }
+
+            GameSessionBootstrap.ClearAfterLoad();
             LoadCurrentLevel();
         }
 

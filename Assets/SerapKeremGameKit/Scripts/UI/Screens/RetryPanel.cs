@@ -1,3 +1,4 @@
+using _Game.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,7 +8,7 @@ namespace SerapKeremGameKit._UI
     {
         [SerializeField] private Button _yesButton;
         [SerializeField] private Button _noButton;
-        [SerializeField] private UIRootController _uiRoot;
+        [SerializeField] private GameUIManager _uiRoot;
 
 		private void Awake()
 		{
@@ -31,7 +32,7 @@ namespace SerapKeremGameKit._UI
             Hide();
         }
 
-		public void SetUIRoot(UIRootController uiRoot)
+		public void SetUIRoot(GameUIManager uiRoot)
 		{
 			_uiRoot = uiRoot;
 		}

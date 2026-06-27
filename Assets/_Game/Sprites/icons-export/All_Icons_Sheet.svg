@@ -1,0 +1,316 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1020" height="1140" viewBox="0 0 1020 1140">
+<defs>
+<filter id="g0" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#8DFF32" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g1" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#25F5FF" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g2" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#25F5FF" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g3" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#8DFF32" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g4" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#8DFF32" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g5" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#FF2FB5" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g6" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#FF2FB5" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g7" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#FF2FB5" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g8" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#25F5FF" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g9" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#FF2FB5" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g10" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#FF2FB5" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g11" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#FF2FB5" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g12" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#25F5FF" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g13" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#FF2FB5" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g14" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#25F5FF" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g15" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#FFE84D" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g16" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#FFE84D" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g17" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#FF2FB5" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g18" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#8DFF32" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g19" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#FF2FB5" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g20" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#25F5FF" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g21" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#25F5FF" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g22" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#8DFF32" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g23" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#25F5FF" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g24" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#25F5FF" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g25" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#8DFF32" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g26" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#FF2FB5" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g27" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#FF2FB5" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g28" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#FF2FB5" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+<clipPath id="half28"><rect x="-4" y="-4" width="16" height="32"></rect></clipPath>
+
+<filter id="g29" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#FFE84D" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+
+<filter id="g30" x="-60%" y="-60%" width="220%" height="220%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="1.1" result="b"></feGaussianBlur>
+  <feFlood flood-color="#FFE84D" flood-opacity="0.9"></feFlood>
+  <feComposite in2="b" operator="in" result="glow"></feComposite>
+  <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+</filter>
+
+</defs>
+<rect width="1020" height="1140" fill="#05070A"></rect>
+<text x="510" y="54" text-anchor="middle" font-family="Bangers, Arial" font-size="44" fill="#25F5FF">GO-ARROW NEON ICONS</text>
+<g transform="translate(30,104) scale(3.4375) translate(4,4)"><g fill="none" stroke="#8DFF32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g0)">
+<path d="M12 5v14"></path><path d="m19 12-7 7-7-7"></path>
+</g></g><text x="85" y="230" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Icon_Arrow_Down</text><g transform="translate(200,104) scale(3.4375) translate(4,4)"><g fill="none" stroke="#25F5FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g1)">
+<path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path>
+</g></g><text x="255" y="230" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Icon_Arrow_Left</text><g transform="translate(370,104) scale(3.4375) translate(4,4)"><g fill="none" stroke="#25F5FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g2)">
+<path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path>
+</g></g><text x="425" y="230" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Icon_Arrow_Right</text><g transform="translate(540,104) scale(3.4375) translate(4,4)"><g fill="none" stroke="#8DFF32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g3)">
+<path d="M12 19V5"></path><path d="m5 12 7-7 7 7"></path>
+</g></g><text x="595" y="230" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Icon_Arrow_Up</text><g transform="translate(710,104) scale(3.4375) translate(4,4)"><g fill="none" stroke="#8DFF32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g4)">
+<circle cx="12" cy="12" r="10"></circle><path d="M17 9 10.5 15.5 7 12"></path>
+</g></g><text x="765" y="230" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Icon_Check</text><g transform="translate(880,104) scale(3.4375) translate(4,4)"><g fill="none" stroke="#FF2FB5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g5)">
+<circle cx="12" cy="12" r="9"></circle>
+</g></g><text x="935" y="230" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Icon_Circle</text><g transform="translate(30,274) scale(3.4375) translate(4,4)"><g fill="none" stroke="#FF2FB5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g6)">
+<circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="1.8" fill="#FF2FB5"></circle>
+</g></g><text x="85" y="400" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Icon_Circle_Dot</text><g transform="translate(200,274) scale(3.4375) translate(4,4)"><g fill="none" stroke="#FF2FB5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g7)">
+<circle cx="12" cy="12" r="9"></circle><path d="M8.5 8.5 15.5 15.5"></path><path d="M15.5 8.5 8.5 15.5"></path>
+</g></g><text x="255" y="400" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Icon_Close</text><g transform="translate(370,274) scale(3.4375) translate(4,4)"><g fill="none" stroke="#25F5FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g8)">
+<path d="m2 8 2 2-2 2 2 2-2 2"></path><path d="m22 8-2 2 2 2-2 2 2 2"></path><path d="M9 5h6a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"></path>
+</g></g><text x="425" y="400" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Icon_Haptics</text><g transform="translate(540,274) scale(3.4375) translate(4,4)"><g fill="none" stroke="#FF2FB5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g9)">
+<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+</g></g><text x="595" y="400" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Icon_Heart_Empty</text><g transform="translate(710,274) scale(3.4375) translate(4,4)"><g fill="none" stroke="#FF2FB5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g10)">
+<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" fill="#FF2FB5"></path>
+</g></g><text x="765" y="400" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Icon_Heart_Full</text><g transform="translate(880,274) scale(3.4375) translate(4,4)"><g fill="none" stroke="#FF2FB5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g11)">
+<path d="M5 11h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1z"></path><path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+</g></g><text x="935" y="400" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Icon_Lock</text><g transform="translate(30,444) scale(3.4375) translate(4,4)"><g fill="none" stroke="#25F5FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g12)">
+<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path>
+</g></g><text x="85" y="570" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Icon_Refresh</text><g transform="translate(200,444) scale(3.4375) translate(4,4)"><g fill="none" stroke="#FF2FB5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g13)">
+<path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle>
+</g></g><text x="255" y="570" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Icon_Settings</text><g transform="translate(370,444) scale(3.4375) translate(4,4)"><g fill="none" stroke="#25F5FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g14)">
+<path d="M11 4.7a.7.7 0 0 0-1.2-.5L6.4 7.6A1.4 1.4 0 0 1 5.4 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.4a1.4 1.4 0 0 1 1 .4l3.4 3.4A.7.7 0 0 0 11 19.3z"></path><path d="M16 9a5 5 0 0 1 0 6"></path><path d="M19.4 5.6a9 9 0 0 1 0 12.7"></path>
+</g></g><text x="425" y="570" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Icon_Sound</text><g transform="translate(540,444) scale(3.4375) translate(4,4)"><g fill="none" stroke="#FFE84D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g15)">
+<path d="M11.5 2.3a.53.53 0 0 1 .95 0l2.3 4.68a2.1 2.1 0 0 0 1.6 1.16l5.17.75a.53.53 0 0 1 .3.9l-3.74 3.64a2.1 2.1 0 0 0-.61 1.88l.88 5.14a.53.53 0 0 1-.77.56l-4.62-2.43a2.1 2.1 0 0 0-1.97 0L6.4 21.01a.53.53 0 0 1-.77-.56l.88-5.14a2.1 2.1 0 0 0-.61-1.88L2.16 9.8a.53.53 0 0 1 .3-.9l5.16-.76a2.1 2.1 0 0 0 1.6-1.16z"></path>
+</g></g><text x="595" y="570" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Icon_Star_Empty</text><g transform="translate(710,444) scale(3.4375) translate(4,4)"><g fill="none" stroke="#FFE84D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g16)">
+<path d="M11.5 2.3a.53.53 0 0 1 .95 0l2.3 4.68a2.1 2.1 0 0 0 1.6 1.16l5.17.75a.53.53 0 0 1 .3.9l-3.74 3.64a2.1 2.1 0 0 0-.61 1.88l.88 5.14a.53.53 0 0 1-.77.56l-4.62-2.43a2.1 2.1 0 0 0-1.97 0L6.4 21.01a.53.53 0 0 1-.77-.56l.88-5.14a2.1 2.1 0 0 0-.61-1.88L2.16 9.8a.53.53 0 0 1 .3-.9l5.16-.76a2.1 2.1 0 0 0 1.6-1.16z" fill="#FFE84D"></path>
+</g></g><text x="765" y="570" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Icon_Star_Full</text><g transform="translate(880,444) scale(3.4375) translate(4,4)"><g fill="none" stroke="#FF2FB5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g17)">
+<circle cx="12" cy="12" r="10"></circle><path d="M9 9 15 15"></path><path d="M15 9 9 15"></path>
+</g></g><text x="935" y="570" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Icon_Uncheck</text><g transform="translate(30,614) scale(3.4375) translate(4,4)"><g fill="none" stroke="#8DFF32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g18)">
+<path d="M5 11h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1z"></path><path d="M8 11V7a4 4 0 0 1 7.6-2.3"></path>
+</g></g><text x="85" y="740" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Icon_Unlock</text><g transform="translate(200,614) scale(3.4375) translate(4,4)"><g fill="none" stroke="#FF2FB5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g19)">
+<path d="m21.7 18-8-14a2 2 0 0 0-3.5 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3Z"></path><path d="M12 9.5v4.5"></path><circle cx="12" cy="17.4" r="0.7" fill="#FF2FB5"></circle>
+</g></g><text x="255" y="740" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Icon_Warning</text><g transform="translate(370,614) scale(3.4375) translate(4,4)"><g fill="none" stroke="#25F5FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g20)">
+<path d="m18 17-5-5 5-5"></path><path d="m11 17-5-5 5-5"></path>
+</g></g><text x="425" y="740" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Arrow_DoubleLeft</text><g transform="translate(540,614) scale(3.4375) translate(4,4)"><g fill="none" stroke="#25F5FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g21)">
+<path d="m6 17 5-5-5-5"></path><path d="m13 17 5-5-5-5"></path>
+</g></g><text x="595" y="740" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Arrow_DoubleRight</text><g transform="translate(710,614) scale(3.4375) translate(4,4)"><g fill="none" stroke="#8DFF32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g22)">
+<path d="M12 4v15"></path><path d="m19 12-7 7-7-7"></path>
+</g></g><text x="765" y="740" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Arrow_Down</text><g transform="translate(880,614) scale(3.4375) translate(4,4)"><g fill="none" stroke="#25F5FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g23)">
+<path d="M20 12H5"></path><path d="m12 19-7-7 7-7"></path>
+</g></g><text x="935" y="740" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Arrow_Left</text><g transform="translate(30,784) scale(3.4375) translate(4,4)"><g fill="none" stroke="#25F5FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g24)">
+<path d="M4 12h15"></path><path d="m12 5 7 7-7 7"></path>
+</g></g><text x="85" y="910" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Arrow_Right</text><g transform="translate(200,784) scale(3.4375) translate(4,4)"><g fill="none" stroke="#8DFF32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g25)">
+<path d="M12 20V5"></path><path d="m5 12 7-7 7 7"></path>
+</g></g><text x="255" y="910" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Arrow_Up</text><g transform="translate(370,784) scale(3.4375) translate(4,4)"><g fill="none" stroke="#FF2FB5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g26)">
+<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+</g></g><text x="425" y="910" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Heart_Empty</text><g transform="translate(540,784) scale(3.4375) translate(4,4)"><g fill="none" stroke="#FF2FB5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g27)">
+<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" fill="#FF2FB5"></path>
+</g></g><text x="595" y="910" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Heart_Full</text><g transform="translate(710,784) scale(3.4375) translate(4,4)"><g fill="none" stroke="#FF2FB5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g28)">
+<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" fill="#FF2FB5" clip-path="url(#half28)"></path>
+</g></g><text x="765" y="910" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Heart_Half</text><g transform="translate(880,784) scale(3.4375) translate(4,4)"><g fill="none" stroke="#FFE84D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g29)">
+<path d="M11.5 2.3a.53.53 0 0 1 .95 0l2.3 4.68a2.1 2.1 0 0 0 1.6 1.16l5.17.75a.53.53 0 0 1 .3.9l-3.74 3.64a2.1 2.1 0 0 0-.61 1.88l.88 5.14a.53.53 0 0 1-.77.56l-4.62-2.43a2.1 2.1 0 0 0-1.97 0L6.4 21.01a.53.53 0 0 1-.77-.56l.88-5.14a2.1 2.1 0 0 0-.61-1.88L2.16 9.8a.53.53 0 0 1 .3-.9l5.16-.76a2.1 2.1 0 0 0 1.6-1.16z"></path>
+</g></g><text x="935" y="910" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Star_Empty</text><g transform="translate(30,954) scale(3.4375) translate(4,4)"><g fill="none" stroke="#FFE84D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" filter="url(#g30)">
+<path d="M11.5 2.3a.53.53 0 0 1 .95 0l2.3 4.68a2.1 2.1 0 0 0 1.6 1.16l5.17.75a.53.53 0 0 1 .3.9l-3.74 3.64a2.1 2.1 0 0 0-.61 1.88l.88 5.14a.53.53 0 0 1-.77.56l-4.62-2.43a2.1 2.1 0 0 0-1.97 0L6.4 21.01a.53.53 0 0 1-.77-.56l.88-5.14a2.1 2.1 0 0 0-.61-1.88L2.16 9.8a.53.53 0 0 1 .3-.9l5.16-.76a2.1 2.1 0 0 0 1.6-1.16z" fill="#FFE84D"></path>
+</g></g><text x="85" y="1080" text-anchor="middle" font-family="Oswald, Arial" font-size="13" fill="#7E94BC">Star_Full</text>
+</svg>

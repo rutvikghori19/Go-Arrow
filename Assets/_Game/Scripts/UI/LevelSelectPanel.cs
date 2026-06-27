@@ -17,11 +17,11 @@ namespace _Game.UI
         [SerializeField] float _cellSize = 140f;
         [SerializeField] float _spacing = 16f;
 
-        UIRootController _uiRoot;
+        GameUIManager _uiRoot;
         readonly List<Button> _buttons = new List<Button>();
         bool _built;
 
-        public void SetUIRoot(UIRootController uiRoot) => _uiRoot = uiRoot;
+        public void SetUIRoot(GameUIManager uiRoot) => _uiRoot = uiRoot;
 
         void Awake()
         {
@@ -72,8 +72,12 @@ namespace _Game.UI
             var panel = CreateRect("Panel", overlay, new Vector2(0.5f, 0.5f), new Vector2(900f, 1200f));
             var panelImage = panel.gameObject.AddComponent<Image>();
             panelImage.color = NeonTheme.UiPanel;
+            var panelBorder = panel.gameObject.AddComponent<Outline>();
+            panelBorder.effectColor = NeonTheme.UiMagentaBorder;
+            panelBorder.effectDistance = new Vector2(3f, -3f);
 
-            var title = CreateText("Title", panel, "Select Level", 56, new Vector2(0f, 520f), new Vector2(800f, 80f), NeonTheme.UiHudText);
+            var title = CreateText("Title", panel, "SELECT LEVEL", 56, new Vector2(0f, 520f), new Vector2(800f, 80f), NeonTheme.UiMagentaBorder);
+            NeonUiTypography.ApplyTitle(title, NeonTheme.UiMagentaBorder, 56f);
 
             var closeGo = CreateRect("CloseButton", panel, new Vector2(0.5f, 0.5f), new Vector2(72f, 72f));
             closeGo.anchoredPosition = new Vector2(380f, 520f);
@@ -111,11 +115,15 @@ namespace _Game.UI
 
         void BuildLevelButtons()
         {
-            if (_contentRoot == null || LevelManager.Instance == null)
+            if (_contentRoot == null)
                 return;
 
-            int total = LevelManager.Instance.TotalLevelCount;
-            int current = LevelManager.Instance.ActiveLevelNumber;
+            bool menu = _uiRoot != null && _uiRoot.IsMainMenuContext;
+            if (!menu && !LevelManager.IsInitialized)
+                return;
+
+            int total = menu ? LevelProgress.TotalLevelCount : LevelManager.Instance.TotalLevelCount;
+            int current = menu ? LevelProgress.ActiveLevelNumber : LevelManager.Instance.ActiveLevelNumber;
 
             for (int level = 1; level <= total; level++)
             {
@@ -140,10 +148,14 @@ namespace _Game.UI
 
         void HighlightCurrentLevel()
         {
-            if (!_built || LevelManager.Instance == null)
+            if (!_built)
                 return;
 
-            int current = LevelManager.Instance.ActiveLevelNumber;
+            bool menu = _uiRoot != null && _uiRoot.IsMainMenuContext;
+            if (!menu && !LevelManager.IsInitialized)
+                return;
+
+            int current = menu ? LevelProgress.ActiveLevelNumber : LevelManager.Instance.ActiveLevelNumber;
             for (int i = 0; i < _buttons.Count; i++)
             {
                 var image = _buttons[i].GetComponent<Image>();
@@ -200,11 +212,9 @@ namespace _Game.UI
             rt.anchoredPosition = position;
 
             var tmp = go.AddComponent<TextMeshProUGUI>();
-            tmp.font = TMP_Settings.defaultFontAsset;
             tmp.text = text;
-            tmp.fontSize = fontSize;
             tmp.alignment = TextAlignmentOptions.Center;
-            tmp.color = color ?? Color.white;
+            NeonUiTypography.ApplyBody(tmp, color ?? Color.white, fontSize, FontStyles.Bold);
             return tmp;
         }
 

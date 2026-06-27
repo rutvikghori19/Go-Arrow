@@ -198,5 +198,9 @@ namespace _Game.Theme
         public static readonly Color UiText = new Color(0.75f, 0.85f, 1f, 1f);
         public static readonly Color UiAccent = new Color(1f, 0.2f, 0.75f, 1f);
         public static readonly Color UiHudText = new Color(0.2f, 0.95f, 1f, 1f);
+        public static readonly Color UiSuccess = new Color(0.35f, 1f, 0.35f, 1f);
+        public static readonly Color UiFail = new Color(1f, 0.25f, 0.45f, 1f);
+        public static readonly Color UiCyanBorder = new Color(0.1f, 0.9f, 1f, 1f);
+        public static readonly Color UiMagentaBorder = new Color(1f, 0.2f, 0.75f, 1f);
     }
 }

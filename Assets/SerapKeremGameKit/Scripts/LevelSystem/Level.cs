@@ -1,17 +1,14 @@
+using System.Collections;
+using _Game.Line;
+using _Game.Theme;
+using _Game.UI;
+using Array2DEditor;
 using SerapKeremGameKit._Camera;
 using SerapKeremGameKit._InputSystem;
 using SerapKeremGameKit._Logging;
 using SerapKeremGameKit._Managers;
-using SerapKeremGameKit._UI;
-using System.Collections;
 using TriInspector;
 using UnityEngine;
-using Array2DEditor;
-using _Game.Line;
-using _Game.Theme;
-using _Game.UI;
-
-
 
 namespace SerapKeremGameKit._LevelSystem
 {
@@ -127,7 +124,7 @@ namespace SerapKeremGameKit._LevelSystem
 
         private void InitializeHUD()
         {
-            UIRootController uiRoot = FindFirstObjectByType<UIRootController>();
+            GameUIManager uiRoot = FindFirstObjectByType<GameUIManager>();
             if (uiRoot != null)
             {
                 uiRoot.InitializeHUD();

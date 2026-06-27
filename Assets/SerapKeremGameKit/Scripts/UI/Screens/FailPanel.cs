@@ -1,3 +1,4 @@
+using _Game.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,7 +10,7 @@ namespace SerapKeremGameKit._UI
         [SerializeField] private Image _failIcon;
         [SerializeField] private TextMeshProUGUI _coinText;
         [SerializeField] private Button _restartButton;
-        [SerializeField] private UIRootController _uiRoot;
+        [SerializeField] private GameUIManager _uiRoot;
 
 		private void Awake()
 		{
@@ -22,7 +23,7 @@ namespace SerapKeremGameKit._UI
 			// Auto-unsubscribe handled by ButtonExtensions
 		}
 
-        public void Setup(int rewardedCoins, UIRootController uiRoot)
+        public void Setup(int rewardedCoins, GameUIManager uiRoot)
         {
             if (_coinText != null) _coinText.text = rewardedCoins.ToString();
             _uiRoot = uiRoot;
@@ -33,7 +34,7 @@ namespace SerapKeremGameKit._UI
 			if (_uiRoot != null) _uiRoot.OnRestartConfirmed();
         }
 
-		public void SetUIRoot(UIRootController uiRoot)
+		public void SetUIRoot(GameUIManager uiRoot)
 		{
 			_uiRoot = uiRoot;
 		}

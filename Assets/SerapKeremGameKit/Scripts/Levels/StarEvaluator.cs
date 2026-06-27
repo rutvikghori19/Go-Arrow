@@ -44,9 +44,9 @@ namespace SerapKeremGameKit._Levels
                 return 0;
             }
 
-            // Fallback to default thresholds if config is not provided
-            if (currentLives >= 5) return 3;
-            if (currentLives >= 3) return 2;
+            // Default thresholds for 3 lives
+            if (currentLives >= 3) return 3;
+            if (currentLives >= 2) return 2;
             if (currentLives >= 1) return 1;
             return 0;
         }

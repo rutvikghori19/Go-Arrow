@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using _Game.Theme;
 using UnityEngine;
 using SerapKeremGameKit._UI;
 
@@ -9,36 +11,60 @@ namespace _Game.UI
         [Header("Heart References")]
         [SerializeField] private List<HeartUI> _hearts = new List<HeartUI>();
 
-        private bool _isInitialized = false;
+        bool _isInitialized;
 
-        private int MaxHearts
+        int MaxHearts
         {
             get
             {
                 if (LivesManager.IsInitialized && LivesManager.Instance != null)
-                {
                     return LivesManager.Instance.MaxLivesCount;
-                }
-                return 5; // Fallback default
+                return 3;
             }
+        }
+
+        void Awake()
+        {
+            if (_hearts == null || _hearts.Count == 0)
+                _hearts = GetComponentsInChildren<HeartUI>(true).ToList();
+
+            TrimHeartSlots();
+            ApplyNeonLayout();
+        }
+
+        void TrimHeartSlots()
+        {
+            int max = MaxHearts;
+            for (int i = 0; i < _hearts.Count; i++)
+            {
+                if (_hearts[i] == null)
+                    continue;
+
+                bool visible = i < max;
+                _hearts[i].gameObject.SetActive(visible);
+            }
+
+            _hearts = _hearts.Take(max).Where(h => h != null).ToList();
+        }
+
+        void ApplyNeonLayout()
+        {
+            var bg = GetComponent<UnityEngine.UI.Image>();
+            if (bg != null)
+                bg.enabled = false;
         }
 
         public void Initialize()
         {
-            if (_isInitialized) return;
+            if (_isInitialized)
+                return;
 
-            int expectedHearts = MaxHearts;
-            if (_hearts.Count != expectedHearts)
-            {
-                Debug.LogWarning($"{name}: Expected {expectedHearts} hearts, but found {_hearts.Count}. Please assign {expectedHearts} HeartUI components in Inspector.", this);
-            }
+            TrimHeartSlots();
 
             foreach (var heart in _hearts)
             {
                 if (heart != null)
-                {
                     heart.Initialize();
-                }
             }
 
             _isInitialized = true;
@@ -49,10 +75,7 @@ namespace _Game.UI
             for (int i = 0; i < _hearts.Count; i++)
             {
                 if (_hearts[i] != null)
-                {
-                    bool isActive = i < activeLives;
-                    _hearts[i].SetActive(isActive);
-                }
+                    _hearts[i].SetActive(i < activeLives);
             }
         }
 

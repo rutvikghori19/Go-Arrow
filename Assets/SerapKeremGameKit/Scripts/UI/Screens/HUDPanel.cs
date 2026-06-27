@@ -26,6 +26,9 @@ namespace SerapKeremGameKit._UI
 
         void ResolveReferences()
         {
+            if (_levelText == null || !_levelText)
+                _levelText = FindNamedComponent<TextMeshProUGUI>("LevelText");
+
             if (_levelText == null)
             {
                 foreach (var tmp in GetComponentsInChildren<TextMeshProUGUI>(true))
@@ -37,6 +40,9 @@ namespace SerapKeremGameKit._UI
                     }
                 }
             }
+
+            if (_timeText == null || !_timeText)
+                _timeText = FindNamedComponent<TextMeshProUGUI>("Time_text");
 
             if (_timeText == null)
             {
@@ -51,11 +57,30 @@ namespace SerapKeremGameKit._UI
             }
 
             if (_heartPanel == null)
-                _heartPanel = FindFirstObjectByType<HeartPanel>();
+                _heartPanel = GetComponentInChildren<HeartPanel>(true);
+        }
+
+        T FindNamedComponent<T>(string objectName) where T : Component
+        {
+            foreach (var t in GetComponentsInChildren<Transform>(true))
+            {
+                if (t.name != objectName)
+                    continue;
+
+                var component = t.GetComponent<T>();
+                if (component != null)
+                    return component;
+            }
+
+            return null;
         }
 
         public override void Show(bool playSound = true)
         {
+            ResolveReferences();
+            bool respectPrefabLayout = _uiRoot != null && _uiRoot.PrefabBuiltUi;
+            NeonHudBuilder.Apply(this, respectPrefabLayout);
+
             base.Show(playSound);
 
             if (!_isInitialized)
@@ -71,7 +96,6 @@ namespace SerapKeremGameKit._UI
                 return;
 
             ResolveReferences();
-            NeonHudBuilder.Apply(this);
             _isInitialized = true;
         }
 
@@ -107,6 +131,17 @@ namespace SerapKeremGameKit._UI
         {
             if (_heartPanel != null)
                 _heartPanel.UpdateHearts(currentLives);
+        }
+
+        public void RefreshLivesDisplay()
+        {
+            if (_heartPanel == null)
+                return;
+
+            _heartPanel.Initialize();
+
+            if (_uiRoot != null && _uiRoot.LivesManagerInstance != null)
+                _heartPanel.UpdateHearts(_uiRoot.LivesManagerInstance.CurrentLives);
         }
 
         public void SetLevelIndex(int levelIndex)

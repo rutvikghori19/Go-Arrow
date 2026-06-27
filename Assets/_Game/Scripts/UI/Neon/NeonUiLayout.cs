@@ -40,6 +40,9 @@ namespace _Game.UI
 
         public static void ApplyToCanvas(RectTransform root, CanvasScaler scaler)
         {
+            if (root != null && root.localScale == Vector3.zero)
+                root.localScale = Vector3.one;
+
             ConfigureCanvas(scaler);
             ApplyPlayArea(root);
         }

@@ -1,3 +1,4 @@
+using _Game.LevelCamera;
 using _Game.UI;
 using SerapKeremGameKit._Logging;
 using SerapKeremGameKit._Singletons;
@@ -23,6 +24,7 @@ namespace SerapKeremGameKit._Camera
 
         private Vector3 _initialPosition;
         private Quaternion _initialRotation;
+        private LevelCameraNavigator _navigator;
 
         public void SnapFollow()
         {
@@ -41,6 +43,19 @@ namespace SerapKeremGameKit._Camera
 
             if (_snapOnStart && _followTarget != null)
                 SnapFollow();
+
+            EnsureNavigator();
+        }
+
+        void EnsureNavigator()
+        {
+            _navigator = GetComponent<LevelCameraNavigator>();
+            if (_navigator == null)
+                _navigator = gameObject.AddComponent<LevelCameraNavigator>();
+
+            UnityEngine.Camera cam = _gameCamera != null ? _gameCamera.GetComponent<UnityEngine.Camera>() : GetComponentInChildren<UnityEngine.Camera>(true);
+            if (cam != null)
+                _navigator.BindCamera(cam, cam.transform);
         }
 
         public void InitializeCameraPosition(Transform point)
@@ -99,7 +114,7 @@ namespace SerapKeremGameKit._Camera
                 return;
             }
 
-            Camera cam = _gameCamera.GetComponent<Camera>();
+            UnityEngine.Camera cam = _gameCamera.GetComponent<UnityEngine.Camera>();
             if (cam == null)
             {
                 TraceLogger.LogError("Camera component not found on game camera transform.", this);
@@ -141,6 +156,10 @@ namespace SerapKeremGameKit._Camera
 
             if (cam.orthographic)
                 cam.orthographicSize = orthographicSize;
+
+            EnsureNavigator();
+            if (_navigator != null)
+                _navigator.CaptureFitState(center, cam.orthographicSize, bounds);
         }
 
         float GetAxisPadding(float axisSize)

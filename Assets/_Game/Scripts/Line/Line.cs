@@ -287,7 +287,7 @@ namespace _Game.Line
                 _materialHandler.SetFailureColor();
             }
 
-            if (!_hasLostLifeForThisCollision && LivesManager.IsInitialized)
+            if (!_hasLostLifeForThisCollision && LivesManager.IsInitialized && LivesManager.Instance.CanLoseLife)
             {
                 _hasLostLifeForThisCollision = true;
                 LivesManager.Instance.LoseLife();

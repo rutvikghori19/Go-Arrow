@@ -92,7 +92,7 @@ namespace SerapKeremGameKit._Managers
             if (ShouldUseProceduralLevel(levelNumber))
                 InstantiateProceduralAndBegin(levelNumber);
             else
-                InstantiateAndBegin(_levels[levelNumber - 1]);
+                InstantiateAndBegin(ResolveHandcraftedLevel(levelNumber));
         }
 
         bool ShouldUseProceduralLevel(int levelNumber)
@@ -100,11 +100,39 @@ namespace SerapKeremGameKit._Managers
             if (!_useProceduralLevels || ResolveProceduralTemplate() == null)
                 return false;
 
-            if (ProceduralLevelUtility.IsHandcraftedLevel(levelNumber) && _levels != null &&
-                levelNumber <= _levels.Length)
+            if (ProceduralLevelUtility.IsHandcraftedLevel(levelNumber) && HasConfiguredHandcraftedLevel(levelNumber))
                 return false;
 
             return ProceduralLevelUtility.IsProceduralLevel(levelNumber);
+        }
+
+        bool HasConfiguredHandcraftedLevel(int levelNumber)
+        {
+            if (_levels == null || levelNumber < 1 || levelNumber > _levels.Length)
+                return false;
+
+            var level = _levels[levelNumber - 1];
+            return level != null && !IsProceduralTemplate(level);
+        }
+
+        Level ResolveHandcraftedLevel(int levelNumber)
+        {
+            if (HasConfiguredHandcraftedLevel(levelNumber))
+                return _levels[levelNumber - 1];
+
+            var resourceLevel = Resources.Load<Level>($"Levels/Level {levelNumber}");
+            if (resourceLevel != null && !IsProceduralTemplate(resourceLevel))
+                return resourceLevel;
+
+            TraceLogger.LogWarning(
+                $"{name}: Missing handcrafted prefab for level {levelNumber}. Falling back to procedural generation.",
+                this);
+            return null;
+        }
+
+        static bool IsProceduralTemplate(Level level)
+        {
+            return level != null && level.name == "Level_Base";
         }
 
         Level ResolveProceduralTemplate()
@@ -129,6 +157,18 @@ namespace SerapKeremGameKit._Managers
 
         private void InstantiateAndBegin(Level targetLevel)
         {
+            if (targetLevel == null)
+            {
+                InstantiateProceduralAndBegin(ProcessedLevelIndex);
+                return;
+            }
+
+            if (IsProceduralTemplate(targetLevel))
+            {
+                InstantiateProceduralAndBegin(ProcessedLevelIndex);
+                return;
+            }
+
             ActiveLevelInstance = Instantiate(targetLevel);
             BeginLoadedLevel();
         }
@@ -166,7 +206,7 @@ namespace SerapKeremGameKit._Managers
             if (ShouldUseProceduralLevel(ProcessedLevelIndex))
                 InstantiateProceduralAndBegin(ProcessedLevelIndex);
             else
-                InstantiateAndBegin(_levels[ProcessedLevelIndex - 1]);
+                InstantiateAndBegin(ResolveHandcraftedLevel(ProcessedLevelIndex));
         }
 
         public void RestartLevel()
@@ -185,7 +225,7 @@ namespace SerapKeremGameKit._Managers
             if (ShouldUseProceduralLevel(levelNumber))
                 InstantiateProceduralAndBegin(levelNumber);
             else
-                InstantiateAndBegin(_levels[levelNumber - 1]);
+                InstantiateAndBegin(ResolveHandcraftedLevel(levelNumber));
         }
 
         public void CleanCurrentLevel()
@@ -279,8 +319,12 @@ namespace SerapKeremGameKit._Managers
         {
             levelNumber = ProceduralLevelUtility.ClampLevelNumber(levelNumber);
 
-            if (ProceduralLevelUtility.IsHandcraftedLevel(levelNumber) && _levels != null && levelNumber <= _levels.Length)
-                return _levels[levelNumber - 1];
+            if (ProceduralLevelUtility.IsHandcraftedLevel(levelNumber))
+            {
+                var handcrafted = ResolveHandcraftedLevel(levelNumber);
+                if (handcrafted != null)
+                    return handcrafted;
+            }
 
             return ResolveProceduralTemplate();
         }

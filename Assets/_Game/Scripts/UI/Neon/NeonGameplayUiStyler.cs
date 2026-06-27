@@ -30,7 +30,7 @@ namespace _Game.UI
 
 
 
-            NeonHudBuilder.Apply(manager.GetComponentInChildren<HUDPanel>(true));
+            NeonHudBuilder.Apply(manager.GetComponentInChildren<HUDPanel>(true), manager.PrefabBuiltUi);
 
             StyleWin(manager.GetComponentInChildren<WinPanel>(true), manager);
 
@@ -67,6 +67,12 @@ namespace _Game.UI
             EnsureText(panel, "Title", "LEVEL CLEAR!", 72f, NeonTheme.UiSuccess, new Vector2(0f, 320f), new Vector2(760f, 90f), true);
 
             StyleCoinLabels(win.transform);
+
+
+
+            CreateDialogButton(panel, "RestartButtonNeon", "LEVEL RESTART", new Vector2(0f, -40f), new Vector2(620f, 96f),
+
+                NeonTheme.UiMagentaBorder, Color.white, win.PressRestart);
 
 
 

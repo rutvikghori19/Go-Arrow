@@ -13,10 +13,28 @@ namespace _Game.UI
             if (!GameSessionBootstrap.ShouldStartLevelOnLoad)
                 GameSessionBootstrap.PrepareEditorPlayInGameScene();
 
+            EnsureLivesManager();
             NeonTheme.ApplyPostProcessing();
 
             if (Camera.main != null)
                 NeonTheme.ApplyCamera(Camera.main);
+        }
+
+        static void EnsureLivesManager()
+        {
+            if (LivesManager.IsInitialized)
+                return;
+
+            Transform parent = null;
+            var managers = GameObject.Find("GameManagers");
+            if (managers != null)
+                parent = managers.transform;
+
+            var livesGo = new GameObject("LivesManager");
+            if (parent != null)
+                livesGo.transform.SetParent(parent, false);
+
+            livesGo.AddComponent<LivesManager>();
         }
     }
 }

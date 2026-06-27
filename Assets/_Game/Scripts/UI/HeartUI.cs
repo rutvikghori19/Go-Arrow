@@ -9,53 +9,39 @@ namespace _Game.UI
         [SerializeField] private Sprite _redHeartSprite;
         [SerializeField] private Sprite _grayHeartSprite;
 
-        [Header("Image Component")]
-        private Image _heartImage;
+        [Header("References")]
+        [SerializeField] private Image _heartImage;
 
-        private bool _isActive = true;
-        private bool _isInitialized = false;
+        bool _isInitialized;
 
         public void SetActive(bool active)
         {
-            _isActive = active;
+            if (_heartImage == null)
+                return;
 
-            if (_heartImage == null) return;
-            
-            if (active)
-            {
-                if (_redHeartSprite != null)
-                {
-                    _heartImage.sprite = _redHeartSprite;
-                }
-            }
-            else
-            {
-                if (_grayHeartSprite != null)
-                {
-                    _heartImage.sprite = _grayHeartSprite;
-                }
-            }
+            if (active && _redHeartSprite != null)
+                _heartImage.sprite = _redHeartSprite;
+            else if (!active && _grayHeartSprite != null)
+                _heartImage.sprite = _grayHeartSprite;
         }
 
         public void Initialize()
         {
-            if (_isInitialized) return;
+            if (_isInitialized)
+                return;
 
-            _heartImage = gameObject.GetComponent<Image>();
+            if (_heartImage == null)
+                _heartImage = GetComponent<Image>();
 
             if (_heartImage == null)
             {
-                Debug.LogWarning($"{name}: Image component is not found. Please assign it in Inspector.", this);
+                Debug.LogWarning($"{name}: Image reference is missing for heart display.", this);
+                return;
             }
 
-            if (_redHeartSprite == null || _grayHeartSprite == null)
-            {
-                Debug.LogWarning($"{name}: Red or Gray heart sprite is not assigned in Inspector.", this);
-            }
-
+            _heartImage.raycastTarget = false;
             SetActive(true);
             _isInitialized = true;
         }
-
     }
 }

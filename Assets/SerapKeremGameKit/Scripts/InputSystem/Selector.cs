@@ -1,9 +1,9 @@
-using System;
+using _Game.LevelCamera;
+using SerapKeremGameKit._InputSystem.Data;
+using SerapKeremGameKit._Logging;
 using TriInspector;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using SerapKeremGameKit._Logging;
-using SerapKeremGameKit._InputSystem.Data;
 
 namespace SerapKeremGameKit._InputSystem
 {
@@ -39,9 +39,21 @@ namespace SerapKeremGameKit._InputSystem
         private void Update()
         {
             if (_playerInputSO == null) return;
-            if (_playerInputSO.DownThisFrame) HandleSelectStart(_playerInputSO.MousePosition);
-            else if (_playerInputSO.Held) HandleDrag(_playerInputSO.MousePosition);
-            else if (_playerInputSO.UpThisFrame) HandleRelease(_playerInputSO.MousePosition);
+
+            LevelCameraNavigator navigator = LevelCameraNavigator.Instance;
+            if (navigator != null && navigator.BlocksArrowSelection)
+                return;
+
+            bool deferredTap = navigator != null && navigator.RequiresDeferredTap;
+
+            if (!deferredTap && _playerInputSO.DownThisFrame)
+                HandleSelectStart(_playerInputSO.MousePosition);
+            else if (deferredTap && _playerInputSO.UpThisFrame && navigator.CanRegisterTap)
+                HandleSelectStart(_playerInputSO.MousePosition);
+            else if (_playerInputSO.Held)
+                HandleDrag(_playerInputSO.MousePosition);
+            else if (_playerInputSO.UpThisFrame)
+                HandleRelease(_playerInputSO.MousePosition);
         }
 
         private void ValidateReferences()

@@ -1,6 +1,7 @@
+using _Game.LevelCamera;
+using SerapKeremGameKit._InputSystem.Data;
 using SerapKeremGameKit._Singletons;
 using UnityEngine;
-using SerapKeremGameKit._InputSystem.Data;
 
 namespace SerapKeremGameKit._InputSystem
 {
@@ -27,7 +28,15 @@ namespace SerapKeremGameKit._InputSystem
 
         private void Update()
         {
-            if (_isInputLocked) return; // Skip processing if input is locked
+            if (_isInputLocked) return;
+
+            if (LevelCameraNavigator.Instance != null &&
+                LevelCameraNavigator.Instance.ConsumeGameplayPointerInput())
+            {
+                _playerInput.ResetFrame();
+                return;
+            }
+
             _playerInput.ResetFrame();
             ProcessMouseInput();
         }

@@ -1,11 +1,17 @@
 #if UNITY_EDITOR
+using System.Collections.Generic;
 using System.IO;
+using _Game.ProceduralLevels;
 using _Game.Theme;
+using _Game.UI;
 using SerapKeremGameKit._Economy;
+using SerapKeremGameKit._LevelSystem;
+using SerapKeremGameKit._Managers;
 using SerapKeremGameKit._UI;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace _Game.UI.Editor
 {
@@ -20,6 +26,8 @@ namespace _Game.UI.Editor
         const string UiSourcePath = "Assets/SerapKeremGameKit/Resources/UI/UI.prefab";
         const string CameraSourcePath = "Assets/SerapKeremGameKit/Resources/Camera/CameraManager.prefab";
         const string LevelManagerSourcePath = "Assets/SerapKeremGameKit/Resources/Managers/LevelManager.prefab";
+        const string LevelsFolder = "Assets/_Game/Resources/Levels";
+        const string LevelBaseResourcePath = "Assets/_Game/Resources/Levels/Level_Base.prefab";
 
         static readonly string[] ManagerResourcePaths =
         {
@@ -95,7 +103,38 @@ namespace _Game.UI.Editor
 
             var instance = (GameObject)PrefabUtility.InstantiatePrefab(source);
             instance.name = "LevelManager";
+            WireLevelManagerLevels(instance.GetComponent<LevelManager>());
             return ScenePrefabEditorUtility.SavePrefab(instance, LevelManagerPrefabPath);
+        }
+
+        static void WireLevelManagerLevels(LevelManager levelManager)
+        {
+            if (levelManager == null)
+                return;
+
+            var levels = new List<Level>();
+            for (int i = 1; i <= ProceduralLevelConstants.HandcraftedLevelCount; i++)
+            {
+                string path = $"{LevelsFolder}/Level {i}.prefab";
+                var level = AssetDatabase.LoadAssetAtPath<Level>(path);
+                if (level == null)
+                {
+                    Debug.LogWarning($"Missing level prefab at {path}");
+                    continue;
+                }
+
+                levels.Add(level);
+            }
+
+            var template = AssetDatabase.LoadAssetAtPath<Level>(LevelBaseResourcePath);
+            var so = new SerializedObject(levelManager);
+            so.FindProperty("_levels").arraySize = levels.Count;
+            for (int i = 0; i < levels.Count; i++)
+                so.FindProperty("_levels").GetArrayElementAtIndex(i).objectReferenceValue = levels[i];
+
+            so.FindProperty("_proceduralLevelTemplate").objectReferenceValue = template;
+            so.FindProperty("_useProceduralLevels").boolValue = true;
+            so.ApplyModifiedPropertiesWithoutUndo();
         }
 
         static GameObject BuildManagersPrefab()
@@ -112,7 +151,19 @@ namespace _Game.UI.Editor
                 walletGo.AddComponent<CurrencyWallet>();
             }
 
+            EnsureLivesManager(root.transform);
+
             return ScenePrefabEditorUtility.SavePrefab(root, ManagersPrefabPath);
+        }
+
+        static void EnsureLivesManager(Transform managersRoot)
+        {
+            if (managersRoot.GetComponentInChildren<LivesManager>(true) != null)
+                return;
+
+            var livesGo = new GameObject("LivesManager");
+            livesGo.transform.SetParent(managersRoot, false);
+            livesGo.AddComponent<LivesManager>();
         }
 
         static GameObject BuildUiPrefab()
@@ -140,7 +191,7 @@ namespace _Game.UI.Editor
             uiSo.ApplyModifiedPropertiesWithoutUndo();
 
             NeonGameplayUiStyler.Apply(ui);
-            NeonHudBuilder.Apply(ui.GetComponentInChildren<HUDPanel>(true));
+            NeonHudBuilder.Apply(ui.GetComponentInChildren<HUDPanel>(true), respectPrefabLayout: true);
 
             EnsureSettingsPanel(instance.transform, ui);
 
@@ -155,7 +206,64 @@ namespace _Game.UI.Editor
 
             WireHud(ui.GetComponentInChildren<HUDPanel>(true), ui);
 
+            var retry = ui.GetComponentInChildren<RetryPanel>(true);
+            if (retry != null)
+                retry.EnsureWired();
+
+            var win = ui.GetComponentInChildren<WinPanel>(true);
+            if (win != null)
+            {
+                win.EnsureWired();
+                WireWinPanel(win);
+            }
+
             return ScenePrefabEditorUtility.SavePrefab(instance, UiPrefabPath);
+        }
+
+        static void WireWinPanel(WinPanel win)
+        {
+            if (win == null)
+                return;
+
+            var winPanelNeon = win.transform.Find("WinPanelNeon");
+            if (winPanelNeon != null)
+            {
+                if (winPanelNeon.Find("RestartButtonNeon") == null)
+                {
+                    var restartButton = NeonUiBuilder.CreateNeonButton(
+                        winPanelNeon,
+                        "LEVEL RESTART",
+                        new Vector2(620f, 96f),
+                        NeonTheme.UiMagentaBorder,
+                        NeonTheme.UiPanel,
+                        Color.white,
+                        null,
+                        "RestartButtonNeon");
+                    restartButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -40f);
+                }
+
+                var neonImage = winPanelNeon.GetComponent<Image>();
+                if (neonImage != null)
+                    neonImage.raycastTarget = false;
+            }
+
+            var winSo = new SerializedObject(win);
+            var heartPanel = win.GetComponentInChildren<HeartPanel>(true);
+            if (heartPanel != null)
+                winSo.FindProperty("_heartPanel").objectReferenceValue = heartPanel;
+
+            if (winPanelNeon != null)
+            {
+                var nextButton = winPanelNeon.Find("NextButtonNeon")?.GetComponent<Button>();
+                if (nextButton != null)
+                    winSo.FindProperty("_nextButton").objectReferenceValue = nextButton;
+
+                var restart = winPanelNeon.Find("RestartButtonNeon")?.GetComponent<Button>();
+                if (restart != null)
+                    winSo.FindProperty("_restartButton").objectReferenceValue = restart;
+            }
+
+            winSo.ApplyModifiedPropertiesWithoutUndo();
         }
 
         static void EnsureSettingsPanel(Transform uiRoot, GameUIManager ui)

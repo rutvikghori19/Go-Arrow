@@ -24,8 +24,15 @@ namespace SerapKeremGameKit._UI
             gameObject.SetActive(true);
             _fadeTween?.Kill();
             if (canvasGroup == null) return;
+
+            if (!playSound)
+            {
+                canvasGroup.alpha = 1f;
+                return;
+            }
+
             canvasGroup.alpha = 0f;
-            if (playSound && AudioManager.IsInitialized && !string.IsNullOrEmpty(_showKey)) AudioManager.Instance.Play(_showKey);
+            if (AudioManager.IsInitialized && !string.IsNullOrEmpty(_showKey)) AudioManager.Instance.Play(_showKey);
             if (HapticManager.IsInitialized && _showHaptic != HapticType.None) HapticManager.Instance.Play(_showHaptic);
             _fadeTween = canvasGroup
                 .DOFade(1f, showDuration)

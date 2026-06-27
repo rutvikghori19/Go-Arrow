@@ -46,6 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enableRandomizedSelection: 1
   _gameplayLevels:
-  - {fileID: 4408890181075704862, guid: 06cacf60e3eea6c42a5d5c8040d16d5e, type: 3}
+  - {fileID: 4408890181075704862, guid: 2d5331d1ee033794da562d52b28d8236, type: 3}
   _introductionLevels:
-  - {fileID: 4408890181075704862, guid: 06cacf60e3eea6c42a5d5c8040d16d5e, type: 3}
+  - {fileID: 4408890181075704862, guid: 2d5331d1ee033794da562d52b28d8236, type: 3}
+  _proceduralLevelTemplate: {fileID: 4408890181075704862, guid: 06cacf60e3eea6c42a5d5c8040d16d5e, type: 3}
+  _useProceduralLevels: 1

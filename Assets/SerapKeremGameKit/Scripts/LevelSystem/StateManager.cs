@@ -58,7 +58,8 @@ namespace SerapKeremGameKit._Managers
         public void SetOnRestart()
         {
             TraceLogger.Log("Level Restarted");
-            SetOnLose();
+            StopTimer();
+            _currentState = GameState.Loading;
         }
         #endregion
 

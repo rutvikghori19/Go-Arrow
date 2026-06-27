@@ -11,7 +11,7 @@ namespace _Game.UI
         const string AppliedKey = "NeonHudApplied";
         const float HeaderButtonSize = 88f;
 
-        public static void Apply(HUDPanel hud)
+        public static void Apply(HUDPanel hud, bool respectPrefabLayout = false)
         {
             if (hud == null)
                 return;
@@ -21,38 +21,75 @@ namespace _Game.UI
                 return;
 
             var header = FindChild(root, "Header");
-            if (header == null)
-                return;
+            var layoutRoot = header != null ? header : root;
 
-            RemoveLegacyBar(header);
+            RemoveLegacyBar(layoutRoot);
 
-            if (header.Find(AppliedKey) == null)
-                new GameObject(AppliedKey).transform.SetParent(header, false);
+            if (layoutRoot.Find(AppliedKey) == null)
+                new GameObject(AppliedKey).transform.SetParent(layoutRoot, false);
 
-            CompactHeader(header);
+            if (header != null && !respectPrefabLayout)
+                CompactHeader(header);
 
             float rowY = -NeonUiLayout.HudHeight * 0.5f;
-            HideLegacyButton(header, "RestartButton");
-            HideLegacyButton(header, "SettingsButton");
+            HideLegacyButton(layoutRoot, "RestartButton");
+            HideLegacyButton(layoutRoot, "SettingsButton");
 
             EnsureHudIconButton(
-                header,
+                layoutRoot,
                 "NeonRestartBtn",
                 NeonTheme.UiCyanBorder,
                 "\u21BB",
                 new Vector2(64f, rowY),
-                hud.PressRestart);
+                hud.PressRestart,
+                respectPrefabLayout);
 
             EnsureHudIconButton(
-                header,
+                layoutRoot,
                 "NeonSettingsBtn",
                 NeonTheme.UiMagentaBorder,
                 "\u2699",
                 new Vector2(176f, rowY),
-                hud.PressSettings);
+                hud.PressSettings,
+                respectPrefabLayout);
 
-            LayoutLevelAndTime(header);
-            CenterHeartPanel(header, rowY);
+            LayoutLevelAndTime(root, layoutRoot, respectPrefabLayout);
+            LayoutHeartPanel(root, layoutRoot, rowY, respectPrefabLayout);
+            EnsureHudElementsVisible(root);
+        }
+
+        static void EnsureHudElementsVisible(Transform hudRoot)
+        {
+            foreach (var name in new[] { "Header", "LevelDisplayer", "LevelText", "HeartPanel" })
+            {
+                var child = FindChild(hudRoot, name);
+                if (child != null)
+                    child.gameObject.SetActive(true);
+            }
+        }
+
+        static void LayoutHeartPanel(Transform searchRoot, Transform layoutRoot, float rowY, bool respectPrefabLayout)
+        {
+            var heartPanel = searchRoot.GetComponentInChildren<HeartPanel>(true);
+            if (heartPanel == null)
+                return;
+
+            if (!respectPrefabLayout)
+            {
+                var panelRt = heartPanel.GetComponent<RectTransform>();
+                if (panelRt.parent != layoutRoot)
+                    panelRt.SetParent(layoutRoot, false);
+
+                panelRt.anchorMin = new Vector2(0.5f, 1f);
+                panelRt.anchorMax = new Vector2(0.5f, 1f);
+                panelRt.pivot = new Vector2(0.5f, 0.5f);
+                panelRt.anchoredPosition = new Vector2(0f, rowY);
+                panelRt.sizeDelta = new Vector2(280f, 72f);
+            }
+
+            var bg = heartPanel.GetComponent<Image>();
+            if (bg != null)
+                bg.enabled = false;
         }
 
         static void EnsureHudIconButton(
@@ -61,15 +98,20 @@ namespace _Game.UI
             Color borderColor,
             string icon,
             Vector2 position,
-            System.Action onClick)
+            System.Action onClick,
+            bool respectPrefabLayout)
         {
             var existing = header.Find(name);
             if (existing != null)
             {
                 existing.gameObject.SetActive(true);
-                var rt = existing as RectTransform;
-                rt.anchoredPosition = position;
-                rt.sizeDelta = new Vector2(HeaderButtonSize, HeaderButtonSize);
+
+                if (!respectPrefabLayout)
+                {
+                    var rt = existing as RectTransform;
+                    rt.anchoredPosition = position;
+                    rt.sizeDelta = new Vector2(HeaderButtonSize, HeaderButtonSize);
+                }
 
                 var btn = existing.GetComponent<Button>();
                 if (btn != null)
@@ -80,6 +122,9 @@ namespace _Game.UI
 
                 return;
             }
+
+            if (respectPrefabLayout)
+                return;
 
             NeonUiBuilder.CreateNeonHudIconButton(header, name, borderColor, icon, HeaderButtonSize, position, onClick);
         }
@@ -108,30 +153,36 @@ namespace _Game.UI
             headerRt.sizeDelta = new Vector2(0f, NeonUiLayout.HudHeight);
         }
 
-        static void LayoutLevelAndTime(Transform header)
+        static void LayoutLevelAndTime(Transform searchRoot, Transform layoutRoot, bool respectPrefabLayout)
         {
-            var timer = FindChild(header, "Timer");
+            var timer = FindChild(searchRoot, "Timer");
             if (timer != null)
                 timer.gameObject.SetActive(false);
 
-            var levelDisplayer = FindChild(header, "LevelDisplayer");
+            var levelDisplayer = FindChild(searchRoot, "LevelDisplayer");
             if (levelDisplayer != null)
             {
                 levelDisplayer.gameObject.SetActive(true);
+
+                if (!respectPrefabLayout)
+                {
+                    if (levelDisplayer.parent != layoutRoot && levelDisplayer.IsChildOf(searchRoot))
+                        levelDisplayer.SetParent(layoutRoot, false);
+
+                    var rt = levelDisplayer as RectTransform;
+                    rt.anchorMin = new Vector2(1f, 1f);
+                    rt.anchorMax = new Vector2(1f, 1f);
+                    rt.pivot = new Vector2(1f, 1f);
+                    rt.anchoredPosition = new Vector2(-24f, -20f);
+                    rt.sizeDelta = new Vector2(220f, 48f);
+                }
 
                 var bg = levelDisplayer.GetComponent<Image>();
                 if (bg != null)
                     bg.enabled = false;
 
-                var rt = levelDisplayer as RectTransform;
-                rt.anchorMin = new Vector2(1f, 1f);
-                rt.anchorMax = new Vector2(1f, 1f);
-                rt.pivot = new Vector2(1f, 1f);
-                rt.anchoredPosition = new Vector2(-24f, -20f);
-                rt.sizeDelta = new Vector2(220f, 48f);
-
                 var pill = levelDisplayer.Find("LevelPill");
-                if (pill == null)
+                if (!respectPrefabLayout && pill == null)
                 {
                     var pillRt = NeonUiBuilder.CreateNeonPill(levelDisplayer, new Vector2(200f, 44f), NeonTheme.UiCyanBorder, "LevelPill");
                     pillRt.anchorMin = new Vector2(0.5f, 0.5f);
@@ -142,20 +193,24 @@ namespace _Game.UI
                 var levelText = FindChild(levelDisplayer, "LevelText")?.GetComponent<TextMeshProUGUI>();
                 if (levelText != null)
                 {
-                    levelText.transform.SetAsLastSibling();
-                    NeonUiTypography.ApplyBody(levelText, NeonTheme.UiHudText, 28f, FontStyles.Bold);
-                    levelText.alignment = TextAlignmentOptions.Center;
+                    levelText.gameObject.SetActive(true);
+                    if (!respectPrefabLayout)
+                    {
+                        levelText.transform.SetAsLastSibling();
+                        NeonUiTypography.ApplyBody(levelText, NeonTheme.UiHudText, 28f, FontStyles.Bold);
+                        levelText.alignment = TextAlignmentOptions.Center;
+                    }
                 }
             }
 
-            if (timer == null)
+            if (timer == null || respectPrefabLayout)
                 return;
 
             var timeText = FindChild(timer, "Time_text")?.GetComponent<TextMeshProUGUI>();
             if (timeText == null)
                 return;
 
-            timeText.transform.SetParent(header, false);
+            timeText.transform.SetParent(layoutRoot, false);
             var timeRt = timeText.rectTransform;
             timeRt.anchorMin = new Vector2(1f, 1f);
             timeRt.anchorMax = new Vector2(1f, 1f);
@@ -165,43 +220,6 @@ namespace _Game.UI
             timeText.gameObject.SetActive(true);
             NeonUiTypography.ApplyBody(timeText, NeonTheme.UiHudText, 36f, FontStyles.Bold);
             timeText.alignment = TextAlignmentOptions.Right;
-        }
-
-        static void CenterHeartPanel(Transform header, float rowY)
-        {
-            var heartPanel = UnityEngine.Object.FindFirstObjectByType<HeartPanel>();
-            if (heartPanel == null)
-                return;
-
-            var hrt = heartPanel.GetComponent<RectTransform>();
-            hrt.SetParent(header, false);
-            hrt.anchorMin = new Vector2(0.5f, 1f);
-            hrt.anchorMax = new Vector2(0.5f, 1f);
-            hrt.pivot = new Vector2(0.5f, 0.5f);
-            hrt.anchoredPosition = new Vector2(0f, rowY);
-            hrt.sizeDelta = new Vector2(280f, 72f);
-
-            var bg = heartPanel.GetComponent<Image>();
-            if (bg != null)
-                bg.enabled = false;
-
-            var heartRow = hrt.Find("Heart") as RectTransform;
-            if (heartRow == null)
-                return;
-
-            heartRow.anchorMin = new Vector2(0.5f, 0.5f);
-            heartRow.anchorMax = new Vector2(0.5f, 0.5f);
-            heartRow.pivot = new Vector2(0.5f, 0.5f);
-            heartRow.anchoredPosition = Vector2.zero;
-            heartRow.sizeDelta = new Vector2(240f, 60f);
-
-            var layout = heartRow.GetComponent<HorizontalLayoutGroup>() ?? heartRow.gameObject.AddComponent<HorizontalLayoutGroup>();
-            layout.childAlignment = TextAnchor.MiddleCenter;
-            layout.spacing = 14f;
-            layout.childControlWidth = false;
-            layout.childControlHeight = false;
-            layout.childForceExpandWidth = false;
-            layout.childForceExpandHeight = false;
         }
 
         static Transform FindChild(Transform parent, string name)

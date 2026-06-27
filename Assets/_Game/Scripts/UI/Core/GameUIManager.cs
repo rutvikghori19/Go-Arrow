@@ -2,6 +2,7 @@ using _Game.Theme;
 using SerapKeremGameKit._Audio;
 using SerapKeremGameKit._Economy;
 using SerapKeremGameKit._Haptics;
+using SerapKeremGameKit._InputSystem;
 using SerapKeremGameKit._LevelSystem;
 using SerapKeremGameKit._Levels;
 using SerapKeremGameKit._Managers;
@@ -50,6 +51,7 @@ namespace _Game.UI
         GameState _lastState = GameState.None;
 
         public bool IsMainMenuContext => _context == GameUiContext.MainMenu;
+        public bool PrefabBuiltUi => _prefabBuiltUi;
 
         protected virtual void Awake()
         {
@@ -82,9 +84,21 @@ namespace _Game.UI
             EnsureSettingsPanel();
 
             if (_hud != null) _hud.SetUIRoot(this);
-            if (_win != null) _win.SetUIRoot(this);
-            if (_fail != null) _fail.SetUIRoot(this);
-            if (_retry != null) _retry.SetUIRoot(this);
+            if (_win != null)
+            {
+                _win.SetUIRoot(this);
+                _win.EnsureWired();
+            }
+            if (_fail != null)
+            {
+                _fail.SetUIRoot(this);
+                _fail.EnsureWired();
+            }
+            if (_retry != null)
+            {
+                _retry.SetUIRoot(this);
+                _retry.EnsureWired();
+            }
 
             HideAllGameplayPanelsImmediate();
 
@@ -155,6 +169,13 @@ namespace _Game.UI
 
             _hud.Show(false);
             _hud.SetLevelIndex(LevelManager.Instance.ActiveLevelNumber - 1);
+            RefreshLivesDisplay();
+        }
+
+        public void RefreshLivesDisplay()
+        {
+            if (_hud != null)
+                _hud.RefreshLivesDisplay();
         }
 
         void SyncWithGameState()
@@ -278,6 +299,9 @@ namespace _Game.UI
 
         public void OnReturnToMainMenu()
         {
+            if (InputHandler.IsInitialized && InputHandler.Instance != null)
+                InputHandler.Instance.UnlockInput();
+
             Time.timeScale = 1f;
             SceneFlow.LoadMainMenu();
         }
@@ -288,12 +312,16 @@ namespace _Game.UI
             if (_win == null || !LevelManager.IsInitialized)
                 return;
 
+            if (InputHandler.IsInitialized && InputHandler.Instance != null)
+                InputHandler.Instance.UnlockInput();
+
             Level active = LevelManager.Instance.ActiveLevelInstance;
             LevelConfig config = ResolveConfig(active);
             int stars = StarEvaluator.EvaluateStarsByLives();
             int reward = Mathf.Max(0, config != null ? config.WinCoins : 10);
             int totalBefore = CurrencyWallet.IsInitialized ? CurrencyWallet.Instance.Coins : 0;
             _win.Setup(stars, reward, totalBefore, this);
+            _win.EnsureWired();
             _win.Show();
         }
 
@@ -303,12 +331,17 @@ namespace _Game.UI
             if (_fail == null)
                 return;
 
+            if (InputHandler.IsInitialized && InputHandler.Instance != null)
+                InputHandler.Instance.UnlockInput();
+
             Level active = LevelManager.IsInitialized ? LevelManager.Instance.ActiveLevelInstance : null;
             LevelConfig config = ResolveConfig(active);
             int reward = Mathf.Max(0, config != null ? config.FailCoins : 0);
             if (reward > 0 && CurrencyWallet.IsInitialized)
                 CurrencyWallet.Instance.Add(reward);
+
             _fail.Setup(reward, this);
+            _fail.EnsureWired();
             _fail.Show();
         }
 
@@ -338,23 +371,41 @@ namespace _Game.UI
 
         public void OnRestartRequested()
         {
-            if (_retry != null) _retry.Show();
+            if (_retry != null)
+            {
+                _retry.EnsureWired();
+                _retry.Show();
+            }
             if (AudioManager.IsInitialized && !string.IsNullOrEmpty(_keyOnRestartDialog))
                 AudioManager.Instance.Play(_keyOnRestartDialog);
             if (HapticManager.IsInitialized)
                 HapticManager.Instance.Play(HapticType.Medium);
         }
 
-        public void OnRestartConfirmed()
+        public void OnWinReplayRequested()
         {
+            if (InputHandler.IsInitialized && InputHandler.Instance != null)
+                InputHandler.Instance.UnlockInput();
+
             HideAll();
+
             if (LevelManager.IsInitialized)
                 LevelManager.Instance.RestartLevel();
+
+            if (_lastState != GameState.OnStart)
+                _lastState = GameState.None;
+
             InitializeHUD();
+
             if (AudioManager.IsInitialized && !string.IsNullOrEmpty(_keyOnRestartConfirm))
                 AudioManager.Instance.Play(_keyOnRestartConfirm);
             if (HapticManager.IsInitialized)
                 HapticManager.Instance.Play(HapticType.Medium);
+        }
+
+        public void OnRestartConfirmed()
+        {
+            OnWinReplayRequested();
         }
 
         public void OnNextLevelRequested()

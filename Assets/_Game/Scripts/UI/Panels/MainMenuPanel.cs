@@ -64,7 +64,7 @@ namespace _Game.UI
             if (_levelText == null)
                 return;
 
-            _levelText.text = $"Playing Level {LevelProgress.ActiveLevelNumber}";
+            _levelText.text = $"Level {LevelProgress.ActiveLevelNumber}";
         }
     }
 }

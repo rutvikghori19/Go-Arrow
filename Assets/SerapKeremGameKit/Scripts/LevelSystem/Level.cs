@@ -33,6 +33,7 @@ namespace SerapKeremGameKit._LevelSystem
         private Coroutine _winCoroutine;
         private Coroutine _loseCoroutine;
         private Coroutine _cameraFitCoroutine;
+        private Coroutine _lifeLossCoroutine;
 
         [SerializeField] private LineManager _lineManager;
         public LineManager LineManager { get => _lineManager; set => _lineManager = value; }
@@ -78,7 +79,7 @@ namespace SerapKeremGameKit._LevelSystem
 
             FitCameraToLevel();
 
-            var cam = CameraManager.Instance.GetComponentInChildren<Camera>(true);
+            var cam = CameraManager.Instance.GetComponentInChildren<UnityEngine.Camera>(true);
             if (cam != null)
                 NeonTheme.ApplyCamera(cam);
             NeonTheme.ApplyPostProcessing();
@@ -124,6 +125,9 @@ namespace SerapKeremGameKit._LevelSystem
 
             UnsubscribeFromEvents();
 
+            if (LivesManager.IsInitialized)
+                LivesManager.Instance.BeginLevel();
+
             SubscribeToLivesManager();
 
             if (_lineManager != null)
@@ -132,6 +136,33 @@ namespace SerapKeremGameKit._LevelSystem
             }
 
             InitializeHUD();
+            StartLifeLossWhenReady();
+        }
+
+        void StartLifeLossWhenReady()
+        {
+            if (_lifeLossCoroutine != null)
+                StopCoroutine(_lifeLossCoroutine);
+
+            _lifeLossCoroutine = StartCoroutine(EnableLifeLossWhenReady());
+        }
+
+        IEnumerator EnableLifeLossWhenReady()
+        {
+            yield return null;
+            yield return new WaitForFixedUpdate();
+
+            if (LivesManager.IsInitialized)
+                LivesManager.Instance.EnableLifeLoss();
+
+            RefreshLivesHud();
+            _lifeLossCoroutine = null;
+        }
+
+        void RefreshLivesHud()
+        {
+            if (GameUIManager.Instance != null)
+                GameUIManager.Instance.RefreshLivesDisplay();
         }
 
         private void InitializeHUD()
@@ -147,13 +178,11 @@ namespace SerapKeremGameKit._LevelSystem
         {
             if (LivesManager.IsInitialized && LivesManager.Instance != null)
             {
-                LivesManager.Instance.Initialize();
+                LivesManager.Instance.OnLivesDepleted -= HandleLivesDepleted;
                 LivesManager.Instance.OnLivesDepleted += HandleLivesDepleted;
-                
+
                 if (LivesManager.Instance.CurrentLives <= 0)
-                {
                     HandleLivesDepleted();
-                }
             }
             else
             {
@@ -170,14 +199,12 @@ namespace SerapKeremGameKit._LevelSystem
             {
                 if (LivesManager.IsInitialized && LivesManager.Instance != null)
                 {
-                    LivesManager.Instance.Initialize();
+                    LivesManager.Instance.OnLivesDepleted -= HandleLivesDepleted;
                     LivesManager.Instance.OnLivesDepleted += HandleLivesDepleted;
-                    
+
                     if (LivesManager.Instance.CurrentLives <= 0)
-                    {
                         HandleLivesDepleted();
-                    }
-                    
+
                     yield break;
                 }
                 

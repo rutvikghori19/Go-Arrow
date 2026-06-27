@@ -25,11 +25,19 @@ namespace _Game.UI
 
         void Awake()
         {
-            if (_hearts == null || _hearts.Count == 0)
-                _hearts = GetComponentsInChildren<HeartUI>(true).ToList();
-
+            ResolveHearts();
             TrimHeartSlots();
             ApplyNeonLayout();
+        }
+
+        void ResolveHearts()
+        {
+            if (_hearts != null && _hearts.Count > 0)
+                return;
+
+            _hearts = GetComponentsInChildren<HeartUI>(true)
+                .OrderBy(h => h.transform.GetSiblingIndex())
+                .ToList();
         }
 
         void TrimHeartSlots()
@@ -59,6 +67,7 @@ namespace _Game.UI
             if (_isInitialized)
                 return;
 
+            ResolveHearts();
             TrimHeartSlots();
 
             foreach (var heart in _hearts)

@@ -25,7 +25,11 @@ namespace _Game.UI
         [Header("Context")]
         [SerializeField] GameUiContext _context = GameUiContext.Gameplay;
 
+        [Header("Main Menu References")]
+        [SerializeField] MainMenuPanel _mainMenuPanel;
+
         [Header("Gameplay References")]
+        [SerializeField] bool _prefabBuiltUi;
         [SerializeField] HUDPanel _hud;
         [SerializeField] WinPanel _win;
         [SerializeField] FailPanel _fail;
@@ -44,7 +48,6 @@ namespace _Game.UI
         [SerializeField] string _keyOnNext = "ui_next";
 
         GameState _lastState = GameState.None;
-        MainMenuPanel _mainMenu;
 
         public bool IsMainMenuContext => _context == GameUiContext.MainMenu;
 
@@ -58,7 +61,9 @@ namespace _Game.UI
 
             Instance = this;
 
-            if (_context == GameUiContext.Gameplay)
+            if (_context == GameUiContext.MainMenu)
+                WireMainMenuContext();
+            else if (_context == GameUiContext.Gameplay)
                 WireGameplayPanels();
 
             var scaler = GetComponent<CanvasScaler>() ?? GetComponentInParent<CanvasScaler>();
@@ -82,7 +87,9 @@ namespace _Game.UI
             if (_retry != null) _retry.SetUIRoot(this);
 
             HideAllGameplayPanelsImmediate();
-            NeonGameplayUiStyler.Apply(this);
+
+            if (!_prefabBuiltUi)
+                NeonGameplayUiStyler.Apply(this);
         }
 
         protected virtual void Start()
@@ -108,35 +115,31 @@ namespace _Game.UI
         public void InitializeAsMainMenu()
         {
             _context = GameUiContext.MainMenu;
-            CleanupLevelSelect();
-            EnsureSettingsPanel();
-            BuildMainMenuIfNeeded();
-            HideAllGameplayPanelsImmediate();
-            if (_settings != null) _settings.HideImmediate();
+            WireMainMenuContext();
         }
 
-        void BuildMainMenuIfNeeded()
+        void WireMainMenuContext()
         {
-            if (_mainMenu != null)
-                return;
+            CleanupLevelSelect();
+            EnsureSettingsPanel();
 
-            _mainMenu = GetComponentInChildren<MainMenuPanel>(true);
-            if (_mainMenu == null)
-            {
-                var go = new GameObject("MainMenuPanel", typeof(RectTransform));
-                go.transform.SetParent(transform, false);
-                NeonUiBuilder.Stretch(go.GetComponent<RectTransform>());
-                _mainMenu = go.AddComponent<MainMenuPanel>();
-            }
+            if (_mainMenuPanel == null)
+                _mainMenuPanel = GetComponentInChildren<MainMenuPanel>(true);
 
-            _mainMenu.Initialize(this);
+            if (_mainMenuPanel != null)
+                _mainMenuPanel.Initialize(this);
+
+            HideAllGameplayPanelsImmediate();
+
+            if (_settings != null)
+                _settings.HideImmediate();
         }
 
         public void ShowMainMenu()
         {
             HideAll();
-            if (_mainMenu != null)
-                _mainMenu.Show(false);
+            if (_mainMenuPanel != null)
+                _mainMenuPanel.Show(false);
         }
 
         void ApplyGameplayInitialState()
@@ -190,7 +193,7 @@ namespace _Game.UI
 
         public void HideAll()
         {
-            if (_mainMenu != null) _mainMenu.Hide(false);
+            if (_mainMenuPanel != null) _mainMenuPanel.Hide(false);
             if (_hud != null) _hud.Hide(false);
             if (_win != null) _win.Hide(false);
             if (_fail != null) _fail.Hide(false);
@@ -239,6 +242,9 @@ namespace _Game.UI
                 _settings.HideImmediate();
                 return;
             }
+
+            if (_prefabBuiltUi)
+                return;
 
             var go = new GameObject("NeonSettingsPanel", typeof(RectTransform));
             go.transform.SetParent(transform, false);
@@ -322,7 +328,7 @@ namespace _Game.UI
 
         void HideExcept(UIPanel screen)
         {
-            if (_mainMenu != null && _mainMenu != screen) _mainMenu.Hide(true);
+            if (_mainMenuPanel != null && _mainMenuPanel != screen) _mainMenuPanel.Hide(true);
             if (_hud != null && _hud != screen) _hud.Hide(true);
             if (_win != null && _win != screen) _win.Hide(true);
             if (_fail != null && _fail != screen) _fail.Hide(true);

@@ -13,6 +13,13 @@ namespace _Game.UI.Editor
         const string MainMenuPath = "Assets/_Game/Scenes/MainMenuScene.unity";
         const string GamePath = "Assets/_Game/Scenes/GameScene.unity";
 
+        [MenuItem("Go-Arrow/Build All Scene Prefabs")]
+        public static void BuildAllScenes()
+        {
+            MainMenuScenePrefabBuilder.BuildAll();
+            GameScenePrefabBuilder.BuildAll();
+        }
+
         [MenuItem("Go-Arrow/Setup Neon UI Scenes")]
         public static void SetupScenes()
         {
@@ -35,25 +42,12 @@ namespace _Game.UI.Editor
 
         static void CreateMainMenuScene()
         {
-            var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            var root = new GameObject("MainMenu");
-            root.AddComponent<MainMenuSceneController>();
-            EditorSceneManager.SaveScene(scene, MainMenuPath);
+            MainMenuScenePrefabBuilder.BuildAll();
         }
 
         static void EnsureGameSceneEntry()
         {
-            if (!File.Exists(GamePath))
-                return;
-
-            var scene = EditorSceneManager.OpenScene(GamePath, OpenSceneMode.Single);
-            if (Object.FindFirstObjectByType<GameSceneEntry>() == null)
-            {
-                var go = new GameObject("GameSceneEntry");
-                go.AddComponent<GameSceneEntry>();
-            }
-
-            EditorSceneManager.SaveScene(scene);
+            GameScenePrefabBuilder.BuildAll();
         }
 
         static void UpdateBuildSettings()

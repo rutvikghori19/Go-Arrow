@@ -71,43 +71,24 @@ namespace _Game.UI
 
 
         void MigrateLegacyPanelIfNeeded()
-
         {
-
             var panel = transform.Find("Panel");
-
             if (panel == null)
-
                 return;
 
-
-
             if (panel.Find("Row_SOUND/Toggle/Knob") != null)
-
             {
-
                 Destroy(panel.gameObject);
-
                 _panel = null;
-
                 _soundToggle = null;
-
                 _hapticToggle = null;
-
                 _mainMenuButton = null;
-
             }
-
         }
 
-
-
         void EnsureNeonHierarchy()
-
         {
-
             if (_panel != null)
-
                 return;
 
 

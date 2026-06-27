@@ -29,6 +29,10 @@ namespace SerapKeremGameKit._InputSystem
         private void Awake()
         {
             _mainCamera = Camera.main;
+
+            if (_selectableLayerMash.value == 0)
+                _selectableLayerMash = LayerMask.GetMask("Line");
+
             ValidateReferences();
         }
 
@@ -47,6 +51,9 @@ namespace SerapKeremGameKit._InputSystem
 
             if (_playerInputSO == null)
                 TraceLogger.LogError("PlayerInputSO reference is missing.");
+
+            if (_selectableLayerMash.value == 0)
+                TraceLogger.LogError("Selectable layer mask is empty. Arrow clicks will not register.");
         }
 
         private void HandleSelectStart(Vector3 screenPos)

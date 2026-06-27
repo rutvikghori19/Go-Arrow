@@ -47,7 +47,7 @@ MonoBehaviour:
   _playerInputSO: {fileID: 11400000, guid: 5bef74744c8d8294cbad4b0c682a0aba, type: 2}
   _selectableLayerMash:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   _raycastDistance: 500
   _enableDebugRay: 1
   _mainCamera: {fileID: 0}

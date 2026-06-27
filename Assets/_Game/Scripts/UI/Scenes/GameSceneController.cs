@@ -4,12 +4,15 @@ using UnityEngine;
 namespace _Game.UI
 {
     /// <summary>
-    /// Optional scene hook for main-menu post FX. Scene objects come from prefabs, not this script.
+    /// Game scene bootstrap. Scene content comes from prefabs, not this script.
     /// </summary>
-    public sealed class MainMenuSceneController : MonoBehaviour
+    public sealed class GameSceneController : MonoBehaviour
     {
         void Awake()
         {
+            if (!GameSessionBootstrap.ShouldStartLevelOnLoad)
+                GameSessionBootstrap.PrepareEditorPlayInGameScene();
+
             NeonTheme.ApplyPostProcessing();
 
             if (Camera.main != null)

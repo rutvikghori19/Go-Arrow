@@ -32,6 +32,7 @@ namespace SerapKeremGameKit._LevelSystem
 
         private Coroutine _winCoroutine;
         private Coroutine _loseCoroutine;
+        private Coroutine _cameraFitCoroutine;
 
         [SerializeField] private LineManager _lineManager;
         public LineManager LineManager { get => _lineManager; set => _lineManager = value; }
@@ -51,8 +52,8 @@ namespace SerapKeremGameKit._LevelSystem
         private void Initialize()
         {
             NeonTheme.ApplyLevelBackground(transform);
-            InitializeCamera();
             InitializeLines();
+            InitializeCamera();
         }
 
         private void InitializeLines()
@@ -75,18 +76,29 @@ namespace SerapKeremGameKit._LevelSystem
                 return;
             }
 
-            if (_linesParent == null)
-            {
-                TraceLogger.LogWarning("Lines parent is not assigned in Inspector. Camera will not be fitted to lines.", this);
-                return;
-            }
-
-            CameraManager.Instance.FitCameraToLines(_linesParent);
+            FitCameraToLevel();
 
             var cam = CameraManager.Instance.GetComponentInChildren<Camera>(true);
             if (cam != null)
                 NeonTheme.ApplyCamera(cam);
             NeonTheme.ApplyPostProcessing();
+
+            if (_cameraFitCoroutine != null)
+                StopCoroutine(_cameraFitCoroutine);
+            _cameraFitCoroutine = StartCoroutine(RefitCameraAfterLayout());
+        }
+
+        private void FitCameraToLevel()
+        {
+            CameraManager.Instance.FitCameraToLevel(transform);
+        }
+
+        private IEnumerator RefitCameraAfterLayout()
+        {
+            yield return null;
+            yield return new WaitForEndOfFrame();
+            FitCameraToLevel();
+            _cameraFitCoroutine = null;
         }
 
         public virtual void Play()

@@ -30,11 +30,10 @@ namespace _Game.UI
         [SerializeField] MainMenuPanel _mainMenuPanel;
 
         [Header("Gameplay References")]
-        [SerializeField] bool _prefabBuiltUi;
-        [SerializeField] HUDPanel _hud;
+        [SerializeField] HudPanel _hud;
         [SerializeField] WinPanel _win;
         [SerializeField] FailPanel _fail;
-        [SerializeField] UIPanel _settings;
+        [SerializeField] SettingPanel _settings;
         [SerializeField] RetryPanel _retry;
 
         [Header("Data")]
@@ -51,7 +50,6 @@ namespace _Game.UI
         GameState _lastState = GameState.None;
 
         public bool IsMainMenuContext => _context == GameUiContext.MainMenu;
-        public bool PrefabBuiltUi => _prefabBuiltUi;
 
         protected virtual void Awake()
         {
@@ -62,48 +60,11 @@ namespace _Game.UI
             }
 
             Instance = this;
-
-            if (_context == GameUiContext.MainMenu)
-                WireMainMenuContext();
-            else if (_context == GameUiContext.Gameplay)
-                WireGameplayPanels();
+            ResolvePanelReferences();
+            CleanupLegacyUi();
 
             var scaler = GetComponent<CanvasScaler>() ?? GetComponentInParent<CanvasScaler>();
             NeonUiLayout.ApplyToCanvas(GetComponent<RectTransform>(), scaler);
-        }
-
-        void WireGameplayPanels()
-        {
-            if (_hud == null) _hud = GetComponentInChildren<HUDPanel>(true);
-            if (_win == null) _win = GetComponentInChildren<WinPanel>(true);
-            if (_fail == null) _fail = GetComponentInChildren<FailPanel>(true);
-            if (_retry == null) _retry = GetComponentInChildren<RetryPanel>(true);
-
-            CleanupLegacySettings();
-            CleanupLevelSelect();
-            EnsureSettingsPanel();
-
-            if (_hud != null) _hud.SetUIRoot(this);
-            if (_win != null)
-            {
-                _win.SetUIRoot(this);
-                _win.EnsureWired();
-            }
-            if (_fail != null)
-            {
-                _fail.SetUIRoot(this);
-                _fail.EnsureWired();
-            }
-            if (_retry != null)
-            {
-                _retry.SetUIRoot(this);
-                _retry.EnsureWired();
-            }
-
-            HideAllGameplayPanelsImmediate();
-
-            if (!_prefabBuiltUi)
-                NeonGameplayUiStyler.Apply(this);
         }
 
         protected virtual void Start()
@@ -129,31 +90,40 @@ namespace _Game.UI
         public void InitializeAsMainMenu()
         {
             _context = GameUiContext.MainMenu;
-            WireMainMenuContext();
+            ResolvePanelReferences();
+            CleanupLegacyUi();
         }
 
-        void WireMainMenuContext()
+        void ResolvePanelReferences()
         {
-            CleanupLevelSelect();
-            EnsureSettingsPanel();
-
             if (_mainMenuPanel == null)
                 _mainMenuPanel = GetComponentInChildren<MainMenuPanel>(true);
 
-            if (_mainMenuPanel != null)
-                _mainMenuPanel.Initialize(this);
+            if (_context != GameUiContext.Gameplay)
+                return;
+
+            if (_hud == null) _hud = GetComponentInChildren<HudPanel>(true);
+            if (_win == null) _win = GetComponentInChildren<WinPanel>(true);
+            if (_fail == null) _fail = GetComponentInChildren<FailPanel>(true);
+            if (_retry == null) _retry = GetComponentInChildren<RetryPanel>(true);
+            if (_settings == null) _settings = GetComponentInChildren<SettingPanel>(true);
 
             HideAllGameplayPanelsImmediate();
+        }
 
-            if (_settings != null)
-                _settings.HideImmediate();
+        void CleanupLegacyUi()
+        {
+            foreach (var panel in GetComponentsInChildren<LevelSelectPanel>(true))
+                Destroy(panel.gameObject);
+
+            foreach (var legacy in GetComponentsInChildren<SettingsPanel>(true))
+                legacy.gameObject.SetActive(false);
         }
 
         public void ShowMainMenu()
         {
             HideAll();
-            if (_mainMenuPanel != null)
-                _mainMenuPanel.Show(false);
+            _mainMenuPanel?.Show(false);
         }
 
         void ApplyGameplayInitialState()
@@ -174,8 +144,7 @@ namespace _Game.UI
 
         public void RefreshLivesDisplay()
         {
-            if (_hud != null)
-                _hud.RefreshLivesDisplay();
+            _hud?.RefreshLivesDisplay();
         }
 
         void SyncWithGameState()
@@ -197,79 +166,40 @@ namespace _Game.UI
             else if (current == GameState.OnWin)
             {
                 ShowWin();
-                if (AudioManager.IsInitialized && !string.IsNullOrEmpty(_keyOnWin))
-                    AudioManager.Instance.Play(_keyOnWin);
-                if (HapticManager.IsInitialized)
-                    HapticManager.Instance.Play(HapticType.Success);
+                PlayFeedback(_keyOnWin, HapticType.Success);
             }
             else if (current == GameState.OnLose)
             {
                 ShowFail();
-                if (AudioManager.IsInitialized && !string.IsNullOrEmpty(_keyOnLose))
-                    AudioManager.Instance.Play(_keyOnLose);
-                if (HapticManager.IsInitialized)
-                    HapticManager.Instance.Play(HapticType.Failure);
+                PlayFeedback(_keyOnLose, HapticType.Failure);
             }
+        }
+
+        void PlayFeedback(string audioKey, HapticType haptic)
+        {
+            if (AudioManager.IsInitialized && !string.IsNullOrEmpty(audioKey))
+                AudioManager.Instance.Play(audioKey);
+            if (HapticManager.IsInitialized)
+                HapticManager.Instance.Play(haptic);
         }
 
         public void HideAll()
         {
-            if (_mainMenuPanel != null) _mainMenuPanel.Hide(false);
-            if (_hud != null) _hud.Hide(false);
-            if (_win != null) _win.Hide(false);
-            if (_fail != null) _fail.Hide(false);
-            if (_settings != null) _settings.Hide(false);
-            if (_retry != null) _retry.Hide(false);
+            _mainMenuPanel?.Hide(false);
+            _hud?.Hide(false);
+            _win?.Hide(false);
+            _fail?.Hide(false);
+            _settings?.Hide(false);
+            _retry?.Hide(false);
         }
 
         void HideAllGameplayPanelsImmediate()
         {
-            if (_win != null) _win.HideImmediate();
-            if (_fail != null) _fail.HideImmediate();
-            if (_settings != null) _settings.HideImmediate();
-            if (_retry != null) _retry.HideImmediate();
-            if (_hud != null) _hud.HideImmediate();
-        }
-
-        void CleanupLevelSelect()
-        {
-            foreach (var panel in GetComponentsInChildren<LevelSelectPanel>(true))
-                Destroy(panel.gameObject);
-        }
-
-        void CleanupLegacySettings()
-        {
-            foreach (var legacy in GetComponentsInChildren<SettingsPanel>(true))
-                legacy.gameObject.SetActive(false);
-        }
-
-        void EnsureSettingsPanel()
-        {
-            CleanupLegacySettings();
-
-            if (_settings != null && _settings is not NeonSettingsPanel)
-                _settings = null;
-
-            var prefabPanel = GetComponentInChildren<NeonSettingsPanel>(true);
-            if (prefabPanel != null)
-                _settings = prefabPanel;
-
-            if (_settings is NeonSettingsPanel neonPanel)
-            {
-                neonPanel.EnsureWired();
-                neonPanel.HideImmediate();
-                return;
-            }
-
-            if (_prefabBuiltUi)
-                return;
-
-            var go = new GameObject("NeonSettingsPanel", typeof(RectTransform));
-            go.transform.SetParent(transform, false);
-            NeonUiBuilder.Stretch(go.GetComponent<RectTransform>());
-            _settings = go.AddComponent<NeonSettingsPanel>();
-            ((NeonSettingsPanel)_settings).EnsureWired();
-            _settings.HideImmediate();
+            _win?.HideImmediate();
+            _fail?.HideImmediate();
+            _settings?.HideImmediate();
+            _retry?.HideImmediate();
+            _hud?.HideImmediate();
         }
 
         public void OnPlayRequested()
@@ -318,8 +248,7 @@ namespace _Game.UI
             int stars = StarEvaluator.EvaluateStarsByLives();
             int reward = Mathf.Max(0, config != null ? config.WinCoins : 10);
             int totalBefore = CurrencyWallet.IsInitialized ? CurrencyWallet.Instance.Coins : 0;
-            _win.Setup(stars, reward, totalBefore, this);
-            _win.EnsureWired();
+            _win.Setup(stars, reward, totalBefore);
             _win.Show();
         }
 
@@ -338,8 +267,7 @@ namespace _Game.UI
             if (reward > 0 && CurrencyWallet.IsInitialized)
                 CurrencyWallet.Instance.Add(reward);
 
-            _fail.Setup(reward, this);
-            _fail.EnsureWired();
+            _fail.Setup(reward);
             _fail.Show();
         }
 
@@ -369,15 +297,8 @@ namespace _Game.UI
 
         public void OnRestartRequested()
         {
-            if (_retry != null)
-            {
-                _retry.EnsureWired();
-                _retry.Show();
-            }
-            if (AudioManager.IsInitialized && !string.IsNullOrEmpty(_keyOnRestartDialog))
-                AudioManager.Instance.Play(_keyOnRestartDialog);
-            if (HapticManager.IsInitialized)
-                HapticManager.Instance.Play(HapticType.Medium);
+            _retry?.Show();
+            PlayFeedback(_keyOnRestartDialog, HapticType.Medium);
         }
 
         public void OnWinReplayRequested()
@@ -394,11 +315,7 @@ namespace _Game.UI
                 _lastState = GameState.None;
 
             InitializeHUD();
-
-            if (AudioManager.IsInitialized && !string.IsNullOrEmpty(_keyOnRestartConfirm))
-                AudioManager.Instance.Play(_keyOnRestartConfirm);
-            if (HapticManager.IsInitialized)
-                HapticManager.Instance.Play(HapticType.Medium);
+            PlayFeedback(_keyOnRestartConfirm, HapticType.Medium);
         }
 
         public void OnRestartConfirmed()
@@ -415,10 +332,7 @@ namespace _Game.UI
             LevelManager.Instance.IncreaseLevelNumber();
             LevelManager.Instance.LoadCurrentLevel();
             InitializeHUD();
-            if (AudioManager.IsInitialized && !string.IsNullOrEmpty(_keyOnNext))
-                AudioManager.Instance.Play(_keyOnNext);
-            if (HapticManager.IsInitialized)
-                HapticManager.Instance.Play(HapticType.Light);
+            PlayFeedback(_keyOnNext, HapticType.Light);
         }
 
         public void ProceedNextLevelAfterReward(int reward)
@@ -430,23 +344,13 @@ namespace _Game.UI
 
         public void OnOpenSettings()
         {
-            EnsureSettingsPanel();
-            if (_settings is NeonSettingsPanel neonPanel)
-                neonPanel.EnsureWired();
-            if (_settings != null) _settings.Show();
-            if (AudioManager.IsInitialized && !string.IsNullOrEmpty(_keyOnOpenSettings))
-                AudioManager.Instance.Play(_keyOnOpenSettings);
-            if (HapticManager.IsInitialized)
-                HapticManager.Instance.Play(HapticType.Selection);
+            _settings?.Show();
+            PlayFeedback(_keyOnOpenSettings, HapticType.Selection);
         }
 
         public void UpdateTimeDisplay(float remainingTime)
         {
-            if (_hud != null)
-                _hud.UpdateTimeDisplay(remainingTime);
+            _hud?.UpdateTimeDisplay(remainingTime);
         }
-
-        public LivesManager LivesManagerInstance =>
-            LivesManager.IsInitialized ? LivesManager.Instance : null;
     }
 }

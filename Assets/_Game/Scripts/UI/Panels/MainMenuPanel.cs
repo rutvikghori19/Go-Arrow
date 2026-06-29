@@ -1,4 +1,3 @@
-using _Game.Theme;
 using SerapKeremGameKit._UI;
 using TMPro;
 using UnityEngine;
@@ -12,18 +11,23 @@ namespace _Game.UI
         [SerializeField] Button _settingsButton;
         [SerializeField] TextMeshProUGUI _levelText;
 
-        GameUIManager _ui;
+        bool _wired;
 
-        public void Initialize(GameUIManager ui)
+        void Awake()
         {
-            _ui = ui;
-            ResolveReferences();
-            WireButtons();
+            WireIfNeeded();
+        }
+
+        void OnEnable()
+        {
             RefreshLevelLabel();
         }
 
-        void ResolveReferences()
+        void WireIfNeeded()
         {
+            if (_wired)
+                return;
+
             if (_playButton == null)
                 _playButton = transform.Find("PlayButton")?.GetComponent<Button>();
 
@@ -36,21 +40,20 @@ namespace _Game.UI
             var levelsButton = transform.Find("LevelsButton");
             if (levelsButton != null)
                 levelsButton.gameObject.SetActive(false);
-        }
 
-        void WireButtons()
-        {
             if (_playButton != null)
             {
                 _playButton.onClick.RemoveAllListeners();
-                _playButton.onClick.AddListener(() => _ui?.OnPlayRequested());
+                _playButton.onClick.AddListener(() => GameUIManager.Instance?.OnPlayRequested());
             }
 
             if (_settingsButton != null)
             {
                 _settingsButton.onClick.RemoveAllListeners();
-                _settingsButton.onClick.AddListener(() => _ui?.OnOpenSettings());
+                _settingsButton.onClick.AddListener(() => GameUIManager.Instance?.OnOpenSettings());
             }
+
+            _wired = true;
         }
 
         public override void Show(bool playSound = true)

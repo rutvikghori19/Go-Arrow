@@ -7,7 +7,6 @@ using _Game.UI;
 using SerapKeremGameKit._Economy;
 using SerapKeremGameKit._LevelSystem;
 using SerapKeremGameKit._Managers;
-using SerapKeremGameKit._UI;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -168,6 +167,13 @@ namespace _Game.UI.Editor
 
         static GameObject BuildUiPrefab()
         {
+            var existing = AssetDatabase.LoadAssetAtPath<GameObject>(UiPrefabPath);
+            if (existing != null)
+            {
+                WireExistingUiPrefab(existing);
+                return existing;
+            }
+
             var source = AssetDatabase.LoadAssetAtPath<GameObject>(UiSourcePath);
             if (source == null)
             {
@@ -191,36 +197,41 @@ namespace _Game.UI.Editor
             uiSo.ApplyModifiedPropertiesWithoutUndo();
 
             NeonGameplayUiStyler.Apply(ui);
-            NeonHudBuilder.Apply(ui.GetComponentInChildren<HUDPanel>(true), respectPrefabLayout: true);
+            NeonHudBuilder.Apply(ui.GetComponentInChildren<HudPanel>(true), respectPrefabLayout: true);
+            EnsureSettingPanel(instance.transform);
 
-            EnsureSettingsPanel(instance.transform, ui);
-
-            uiSo = new SerializedObject(ui);
-            uiSo.FindProperty("_prefabBuiltUi").boolValue = true;
-            uiSo.FindProperty("_hud").objectReferenceValue = ui.GetComponentInChildren<HUDPanel>(true);
-            uiSo.FindProperty("_win").objectReferenceValue = ui.GetComponentInChildren<WinPanel>(true);
-            uiSo.FindProperty("_fail").objectReferenceValue = ui.GetComponentInChildren<FailPanel>(true);
-            uiSo.FindProperty("_retry").objectReferenceValue = ui.GetComponentInChildren<RetryPanel>(true);
-            uiSo.FindProperty("_settings").objectReferenceValue = ui.GetComponentInChildren<NeonSettingsPanel>(true);
-            uiSo.ApplyModifiedPropertiesWithoutUndo();
-
-            WireHud(ui.GetComponentInChildren<HUDPanel>(true), ui);
-
-            var retry = ui.GetComponentInChildren<RetryPanel>(true);
-            if (retry != null)
-                retry.EnsureWired();
-
-            var win = ui.GetComponentInChildren<WinPanel>(true);
-            if (win != null)
-            {
-                win.EnsureWired();
-                WireWinPanel(win);
-            }
-
+            WireUiManagerReferences(ui);
             return ScenePrefabEditorUtility.SavePrefab(instance, UiPrefabPath);
         }
 
-        static void WireWinPanel(WinPanel win)
+        static void WireExistingUiPrefab(GameObject prefabRoot)
+        {
+            var ui = prefabRoot.GetComponent<GameUIManager>();
+            if (ui == null)
+                return;
+
+            EnsureSettingPanel(prefabRoot.transform);
+            WireUiManagerReferences(ui);
+
+            var uiSo = new SerializedObject(ui);
+            uiSo.ApplyModifiedPropertiesWithoutUndo();
+            EditorUtility.SetDirty(prefabRoot);
+        }
+
+        static void WireUiManagerReferences(GameUIManager ui)
+        {
+            var uiSo = new SerializedObject(ui);
+            uiSo.FindProperty("_hud").objectReferenceValue = ui.GetComponentInChildren<HudPanel>(true);
+            uiSo.FindProperty("_win").objectReferenceValue = ui.GetComponentInChildren<WinPanel>(true);
+            uiSo.FindProperty("_fail").objectReferenceValue = ui.GetComponentInChildren<FailPanel>(true);
+            uiSo.FindProperty("_retry").objectReferenceValue = ui.GetComponentInChildren<RetryPanel>(true);
+            uiSo.FindProperty("_settings").objectReferenceValue = ui.GetComponentInChildren<SettingPanel>(true);
+            uiSo.ApplyModifiedPropertiesWithoutUndo();
+
+            WireWinPanelReferences(ui.GetComponentInChildren<WinPanel>(true));
+        }
+
+        static void WireWinPanelReferences(WinPanel win)
         {
             if (win == null)
                 return;
@@ -228,20 +239,6 @@ namespace _Game.UI.Editor
             var winPanelNeon = win.transform.Find("WinPanelNeon");
             if (winPanelNeon != null)
             {
-                if (winPanelNeon.Find("RestartButtonNeon") == null)
-                {
-                    var restartButton = NeonUiBuilder.CreateNeonButton(
-                        winPanelNeon,
-                        "LEVEL RESTART",
-                        new Vector2(620f, 96f),
-                        NeonTheme.UiMagentaBorder,
-                        NeonTheme.UiPanel,
-                        Color.white,
-                        null,
-                        "RestartButtonNeon");
-                    restartButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -40f);
-                }
-
                 var neonImage = winPanelNeon.GetComponent<Image>();
                 if (neonImage != null)
                     neonImage.raycastTarget = false;
@@ -266,30 +263,13 @@ namespace _Game.UI.Editor
             winSo.ApplyModifiedPropertiesWithoutUndo();
         }
 
-        static void EnsureSettingsPanel(Transform uiRoot, GameUIManager ui)
+        static void EnsureSettingPanel(Transform uiRoot)
         {
-            var settings = uiRoot.GetComponentInChildren<NeonSettingsPanel>(true);
+            var settings = uiRoot.GetComponentInChildren<SettingPanel>(true);
             if (settings == null)
-            {
-                var settingsGo = new GameObject("NeonSettingsPanel", typeof(RectTransform));
-                settingsGo.transform.SetParent(uiRoot, false);
-                NeonUiBuilder.Stretch(settingsGo.GetComponent<RectTransform>());
-                settings = settingsGo.AddComponent<NeonSettingsPanel>();
-            }
-
-            settings.Show(false);
-            settings.HideImmediate();
-        }
-
-        static void WireHud(HUDPanel hud, GameUIManager ui)
-        {
-            if (hud == null)
                 return;
 
-            var hudSo = new SerializedObject(hud);
-            hudSo.FindProperty("_uiRoot").objectReferenceValue = ui;
-            hudSo.FindProperty("_heartPanel").objectReferenceValue = hud.GetComponentInChildren<HeartPanel>(true);
-            hudSo.ApplyModifiedPropertiesWithoutUndo();
+            settings.HideImmediate();
         }
 
         static void SetupScene(

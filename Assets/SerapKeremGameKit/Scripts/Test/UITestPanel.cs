@@ -81,7 +81,7 @@ namespace SerapKeremGameKit._UI
                     total = w.Coins;
                 }
             }
-            _win.Setup(stars, winCoins, total, _uiRoot);
+            _win.Setup(stars, winCoins, total);
             _win.Show();
         }
 
@@ -102,7 +102,7 @@ namespace SerapKeremGameKit._UI
                 var w = GetWallet();
                 if (w != null) w.Add(failCoins);
             }
-            _fail.Setup(failCoins, _uiRoot);
+            _fail.Setup(failCoins);
             _fail.Show();
         }
 

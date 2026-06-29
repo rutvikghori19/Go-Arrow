@@ -3013,7 +3013,7 @@ GameObject:
   - component: {fileID: 3379563136264293257}
   - component: {fileID: 8934051433398371924}
   m_Layer: 0
-  m_Name: NeonSettingsPanel
+  m_Name: SettingPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

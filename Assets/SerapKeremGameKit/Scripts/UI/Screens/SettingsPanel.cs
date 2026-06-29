@@ -5,6 +5,7 @@ using SerapKeremGameKit._Haptics;
 
 namespace SerapKeremGameKit._UI
 {
+    /// <summary>Legacy panel — disabled at runtime by <see cref="_Game.UI.GameUIManager"/>.</summary>
 	public sealed class SettingsPanel : UIPanel
     {
         [SerializeField] private Toggle _soundToggle;

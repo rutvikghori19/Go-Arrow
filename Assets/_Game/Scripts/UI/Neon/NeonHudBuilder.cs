@@ -1,5 +1,4 @@
 using _Game.Theme;
-using SerapKeremGameKit._UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,7 +10,7 @@ namespace _Game.UI
         const string AppliedKey = "NeonHudApplied";
         const float HeaderButtonSize = 88f;
 
-        public static void Apply(HUDPanel hud, bool respectPrefabLayout = false)
+        public static void Apply(HudPanel hud, bool respectPrefabLayout = false)
         {
             if (hud == null)
                 return;
@@ -41,7 +40,7 @@ namespace _Game.UI
                 NeonTheme.UiCyanBorder,
                 "\u21BB",
                 new Vector2(64f, rowY),
-                hud.PressRestart,
+                () => GameUIManager.Instance?.OnRestartRequested(),
                 respectPrefabLayout);
 
             EnsureHudIconButton(
@@ -50,7 +49,7 @@ namespace _Game.UI
                 NeonTheme.UiMagentaBorder,
                 "\u2699",
                 new Vector2(176f, rowY),
-                hud.PressSettings,
+                () => GameUIManager.Instance?.OnOpenSettings(),
                 respectPrefabLayout);
 
             LayoutLevelAndTime(root, layoutRoot, respectPrefabLayout);

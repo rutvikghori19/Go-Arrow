@@ -1,7 +1,7 @@
-using _Game.Theme;
 using SerapKeremGameKit._Audio;
 using SerapKeremGameKit._Economy;
 using SerapKeremGameKit._Haptics;
+using SerapKeremGameKit._LevelSystem;
 using SerapKeremGameKit._Managers;
 using SerapKeremGameKit._UI;
 using SerapKeremGameKit._Utilities;
@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 namespace _Game.UI
 {
-    public sealed class NeonSettingsPanel : UIPanel
+    public sealed class SettingPanel : UIPanel
     {
         static readonly string[] OnMarkNames = { "Check", "RightMark", "Right", "RightMarkIcon" };
         static readonly string[] CrossNames = { "Cross", "WrongMark", "X" };
@@ -29,21 +29,34 @@ namespace _Game.UI
         Button _mainMenuButton;
         Button _clearDataButton;
         RectTransform _panel;
+        bool _wired;
+
+        void Awake()
+        {
+            WireIfNeeded();
+        }
+
+        void OnEnable()
+        {
+            WireIfNeeded();
+            RefreshFromPrefs();
+            RefreshContextButtons();
+        }
 
         public override void Show(bool playSound = true)
         {
-            MigrateLegacyPanelIfNeeded();
-            EnsurePanel();
-            EnsureWired();
+            WireIfNeeded();
             RefreshFromPrefs();
             RefreshContextButtons();
             base.Show(playSound);
         }
 
-        public void EnsureWired()
+        void WireIfNeeded()
         {
-            ClearResolvedReferences();
-            EnsurePanel();
+            if (_wired)
+                return;
+
+            _panel = transform.Find("Panel") as RectTransform;
             if (_panel == null)
                 return;
 
@@ -51,35 +64,11 @@ namespace _Game.UI
             PreparePrefabPanelRaycasts();
             WireButtons();
             WireToggles();
-        }
-
-        void EnsurePanel()
-        {
-            _panel = transform.Find("Panel") as RectTransform;
-            if (_panel != null)
-                return;
-
-            EnsureNeonHierarchy();
-        }
-
-        void ClearResolvedReferences()
-        {
-            _soundToggle = null;
-            _hapticToggle = null;
-            _soundOnMark = null;
-            _soundCross = null;
-            _hapticOnMark = null;
-            _hapticCross = null;
-            _closeButton = null;
-            _mainMenuButton = null;
-            _clearDataButton = null;
+            _wired = true;
         }
 
         void ResolveReferences()
         {
-            if (_panel == null)
-                return;
-
             _soundToggle = FindRowToggle(_panel, "Row_SOUND");
             _hapticToggle = FindRowToggle(_panel, "Row_HAPTICS");
 
@@ -156,9 +145,6 @@ namespace _Game.UI
 
         void PreparePrefabPanelRaycasts()
         {
-            if (_panel == null)
-                return;
-
             DisableRaycast(_panel.GetComponent<Image>());
 
             var inner = _panel.Find("Inner");
@@ -320,8 +306,7 @@ namespace _Game.UI
             if (GameUIManager.Instance == null || !GameUIManager.Instance.IsMainMenuContext)
                 return;
 
-            var menuPanel = GameUIManager.Instance.GetComponentInChildren<MainMenuPanel>(true);
-            menuPanel?.RefreshDisplay();
+            GameUIManager.Instance.GetComponentInChildren<MainMenuPanel>(true)?.RefreshDisplay();
         }
 
         static void ApplyToggleVisual(GameObject onMark, GameObject cross, bool isOn)
@@ -330,69 +315,6 @@ namespace _Game.UI
                 onMark.SetActive(isOn);
             if (cross != null)
                 cross.SetActive(!isOn);
-        }
-
-        void MigrateLegacyPanelIfNeeded()
-        {
-            var panel = transform.Find("Panel");
-            if (panel == null)
-                return;
-
-            if (panel.Find("Row_SOUND/Toggle/Knob") == null)
-                return;
-
-            Destroy(panel.gameObject);
-            _panel = null;
-            ClearResolvedReferences();
-        }
-
-        void EnsureNeonHierarchy()
-        {
-            if (_panel != null)
-                return;
-
-            var root = transform as RectTransform;
-            NeonUiBuilder.Stretch(root);
-
-            if (GetComponent<Image>() == null)
-            {
-                var dim = gameObject.AddComponent<Image>();
-                dim.color = new Color(0f, 0f, 0f, 0.78f);
-            }
-
-            if (canvasGroup == null)
-                canvasGroup = NeonUiBuilder.EnsureCanvasGroup(gameObject);
-
-            _panel = NeonUiBuilder.CreateNeonPanel(transform, new Vector2(820f, 700f), NeonTheme.UiPanel, NeonTheme.UiCyanBorder, "Panel");
-
-            NeonUiBuilder.CreatePositionedText(_panel, "SETTINGS", 52f, NeonTheme.UiHudText, new Vector2(0f, 250f), new Vector2(700f, 80f), TMPro.TextAlignmentOptions.Center, "Title", useTitleFont: true);
-
-            var close = NeonUiBuilder.CreateIconButton(_panel, "X", new Vector2(72f, 72f), NeonTheme.UiMagentaBorder, () => Hide(false), "CloseButton");
-            close.GetComponent<RectTransform>().anchoredPosition = new Vector2(350f, 250f);
-
-            _soundToggle = NeonUiBuilder.CreateNeonCheckToggle(_panel, "SOUND", new Vector2(0f, 60f), PlayerPrefs.GetInt(SoundKey, 1) == 1, OnSoundChanged);
-            _hapticToggle = NeonUiBuilder.CreateNeonCheckToggle(_panel, "HAPTICS", new Vector2(0f, -50f), PlayerPrefs.GetInt(HapticKey, 1) == 1, OnHapticChanged);
-
-            _soundOnMark = _panel.Find("Row_SOUND/Box/Check")?.gameObject;
-            _soundCross = _panel.Find("Row_SOUND/Box/Cross")?.gameObject;
-            _hapticOnMark = _panel.Find("Row_HAPTICS/Box/Check")?.gameObject;
-            _hapticCross = _panel.Find("Row_HAPTICS/Box/Cross")?.gameObject;
-
-            _mainMenuButton = NeonUiBuilder.CreateNeonButton(
-                _panel,
-                "MAIN MENU",
-                new Vector2(620f, 96f),
-                NeonTheme.UiMagentaBorder,
-                NeonTheme.UiPanel,
-                NeonTheme.UiText,
-                () =>
-                {
-                    Hide(false);
-                    GameUIManager.Instance?.OnReturnToMainMenu();
-                },
-                "MainMenuButton");
-            _mainMenuButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -220f);
-            _mainMenuButton.gameObject.SetActive(false);
         }
 
         static void OnSoundChanged(bool value)

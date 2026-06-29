@@ -1,10 +1,10 @@
 #if UNITY_EDITOR
 using System.IO;
 using _Game.Theme;
+using _Game.UI;
 using SerapKeremGameKit._Audio;
 using SerapKeremGameKit._Economy;
 using SerapKeremGameKit._Haptics;
-using SerapKeremGameKit._UI;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -83,7 +83,10 @@ namespace _Game.UI.Editor
         {
             var existing = AssetDatabase.LoadAssetAtPath<GameObject>(UiPrefabPath);
             if (existing != null)
-                AssetDatabase.DeleteAsset(UiPrefabPath);
+            {
+                WireExistingMainMenuPrefab(existing);
+                return existing;
+            }
 
             var canvasGo = new GameObject(
                 "MainMenuUI",
@@ -155,11 +158,10 @@ namespace _Game.UI.Editor
             menuSo.FindProperty("_levelText").objectReferenceValue = levelLabel;
             menuSo.ApplyModifiedPropertiesWithoutUndo();
 
-            var settingsGo = new GameObject("NeonSettingsPanel", typeof(RectTransform));
+            var settingsGo = new GameObject("SettingPanel", typeof(RectTransform));
             settingsGo.transform.SetParent(canvasGo.transform, false);
             NeonUiBuilder.Stretch(settingsGo.GetComponent<RectTransform>());
-            var settingsPanel = settingsGo.AddComponent<NeonSettingsPanel>();
-            settingsPanel.Show(false);
+            var settingsPanel = settingsGo.AddComponent<SettingPanel>();
             settingsPanel.HideImmediate();
 
             uiSo = new SerializedObject(ui);
@@ -170,6 +172,19 @@ namespace _Game.UI.Editor
             var prefab = PrefabUtility.SaveAsPrefabAsset(canvasGo, UiPrefabPath);
             Object.DestroyImmediate(canvasGo);
             return prefab;
+        }
+
+        static void WireExistingMainMenuPrefab(GameObject prefabRoot)
+        {
+            var ui = prefabRoot.GetComponent<GameUIManager>();
+            if (ui == null)
+                return;
+
+            var uiSo = new SerializedObject(ui);
+            uiSo.FindProperty("_mainMenuPanel").objectReferenceValue = ui.GetComponentInChildren<MainMenuPanel>(true);
+            uiSo.FindProperty("_settings").objectReferenceValue = ui.GetComponentInChildren<SettingPanel>(true);
+            uiSo.ApplyModifiedPropertiesWithoutUndo();
+            EditorUtility.SetDirty(prefabRoot);
         }
 
         static void SetupScene(GameObject cameraPrefab, GameObject managersPrefab, GameObject uiPrefab)

@@ -59,6 +59,8 @@ namespace _Game.UI
             base.Show(playSound);
         }
 
+        public void RefreshDisplay() => RefreshLevelLabel();
+
         void RefreshLevelLabel()
         {
             if (_levelText == null)

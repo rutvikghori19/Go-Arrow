@@ -250,17 +250,14 @@ namespace _Game.UI
             if (_settings != null && _settings is not NeonSettingsPanel)
                 _settings = null;
 
+            var prefabPanel = GetComponentInChildren<NeonSettingsPanel>(true);
+            if (prefabPanel != null)
+                _settings = prefabPanel;
+
             if (_settings is NeonSettingsPanel neonPanel)
             {
+                neonPanel.EnsureWired();
                 neonPanel.HideImmediate();
-                return;
-            }
-
-            var existing = GetComponentInChildren<NeonSettingsPanel>(true);
-            if (existing != null)
-            {
-                _settings = existing;
-                _settings.HideImmediate();
                 return;
             }
 
@@ -271,6 +268,7 @@ namespace _Game.UI
             go.transform.SetParent(transform, false);
             NeonUiBuilder.Stretch(go.GetComponent<RectTransform>());
             _settings = go.AddComponent<NeonSettingsPanel>();
+            ((NeonSettingsPanel)_settings).EnsureWired();
             _settings.HideImmediate();
         }
 
@@ -433,6 +431,8 @@ namespace _Game.UI
         public void OnOpenSettings()
         {
             EnsureSettingsPanel();
+            if (_settings is NeonSettingsPanel neonPanel)
+                neonPanel.EnsureWired();
             if (_settings != null) _settings.Show();
             if (AudioManager.IsInitialized && !string.IsNullOrEmpty(_keyOnOpenSettings))
                 AudioManager.Instance.Play(_keyOnOpenSettings);

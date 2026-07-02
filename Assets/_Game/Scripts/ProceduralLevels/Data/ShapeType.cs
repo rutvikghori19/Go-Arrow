@@ -21,6 +21,14 @@ namespace _Game.ProceduralLevels
         Cake = 16,
         Flower = 17,
         Hexagon = 18,
-        Paw = 19
+        Paw = 19,
+
+        // Bitmap-defined silhouettes (see ShapeMaskGenerator.GetBitmap).
+        Trophy = 20,
+        Anchor = 21,
+        Dog = 22,
+        Duck = 23,
+        Cup = 24,
+        Car = 25
     }
 }

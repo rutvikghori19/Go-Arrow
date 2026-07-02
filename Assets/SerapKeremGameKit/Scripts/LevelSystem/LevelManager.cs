@@ -30,10 +30,6 @@ namespace SerapKeremGameKit._Managers
         [FormerlySerializedAs("_gameplayLevels")]
         [SerializeField, Required] private Level[] _levels;
 
-        [Title("Procedural Levels")]
-        [SerializeField] private Level _proceduralLevelTemplate;
-        [SerializeField] private bool _useProceduralLevels = true;
-
         public Level ActiveLevelInstance { get; private set; }
         public int ProcessedLevelIndex { get; private set; }
 
@@ -85,25 +81,15 @@ namespace SerapKeremGameKit._Managers
 
         public void LoadCurrentLevel()
         {
-            int levelNumber = ProceduralLevelUtility.ClampLevelNumber(ActiveLevelNumber);
+            int levelNumber = ClampLevel(ActiveLevelNumber);
             ActiveLevelNumber = levelNumber;
             ProcessedLevelIndex = levelNumber;
-
-            if (ShouldUseProceduralLevel(levelNumber))
-                InstantiateProceduralAndBegin(levelNumber);
-            else
-                InstantiateAndBegin(ResolveHandcraftedLevel(levelNumber));
+            InstantiateAndBegin(ResolveHandcraftedLevel(levelNumber));
         }
 
-        bool ShouldUseProceduralLevel(int levelNumber)
+        static int ClampLevel(int levelNumber)
         {
-            if (!_useProceduralLevels || ResolveProceduralTemplate() == null)
-                return false;
-
-            if (ProceduralLevelUtility.IsHandcraftedLevel(levelNumber) && HasConfiguredHandcraftedLevel(levelNumber))
-                return false;
-
-            return ProceduralLevelUtility.IsProceduralLevel(levelNumber);
+            return Mathf.Clamp(levelNumber, 1, ProceduralLevelConstants.TotalLevelCount);
         }
 
         bool HasConfiguredHandcraftedLevel(int levelNumber)
@@ -111,8 +97,7 @@ namespace SerapKeremGameKit._Managers
             if (_levels == null || levelNumber < 1 || levelNumber > _levels.Length)
                 return false;
 
-            var level = _levels[levelNumber - 1];
-            return level != null && !IsProceduralTemplate(level);
+            return _levels[levelNumber - 1] != null;
         }
 
         Level ResolveHandcraftedLevel(int levelNumber)
@@ -121,51 +106,18 @@ namespace SerapKeremGameKit._Managers
                 return _levels[levelNumber - 1];
 
             var resourceLevel = Resources.Load<Level>($"Levels/Level {levelNumber}");
-            if (resourceLevel != null && !IsProceduralTemplate(resourceLevel))
+            if (resourceLevel != null)
                 return resourceLevel;
 
-            TraceLogger.LogWarning(
-                $"{name}: Missing handcrafted prefab for level {levelNumber}. Falling back to procedural generation.",
-                this);
+            TraceLogger.LogWarning($"{name}: Missing prefab for level {levelNumber}.", this);
             return null;
-        }
-
-        static bool IsProceduralTemplate(Level level)
-        {
-            return level != null && level.name == "Level_Base";
-        }
-
-        Level ResolveProceduralTemplate()
-        {
-            if (_proceduralLevelTemplate != null)
-                return _proceduralLevelTemplate;
-
-            return Resources.Load<Level>("Levels/Level_Base");
-        }
-
-        private void InstantiateProceduralAndBegin(int levelNumber)
-        {
-            var template = ResolveProceduralTemplate();
-            ActiveLevelInstance = Instantiate(template);
-            var host = ActiveLevelInstance.GetComponent<ProceduralLevelHost>();
-            if (host == null)
-                host = ActiveLevelInstance.gameObject.AddComponent<ProceduralLevelHost>();
-
-            host.Build(levelNumber);
-            BeginLoadedLevel();
         }
 
         private void InstantiateAndBegin(Level targetLevel)
         {
             if (targetLevel == null)
             {
-                InstantiateProceduralAndBegin(ProcessedLevelIndex);
-                return;
-            }
-
-            if (IsProceduralTemplate(targetLevel))
-            {
-                InstantiateProceduralAndBegin(ProcessedLevelIndex);
+                TraceLogger.LogWarning($"{name}: No level prefab to load.", this);
                 return;
             }
 
@@ -203,10 +155,7 @@ namespace SerapKeremGameKit._Managers
         public void RetryLevel()
         {
             TerminateCurrentLevel();
-            if (ShouldUseProceduralLevel(ProcessedLevelIndex))
-                InstantiateProceduralAndBegin(ProcessedLevelIndex);
-            else
-                InstantiateAndBegin(ResolveHandcraftedLevel(ProcessedLevelIndex));
+            InstantiateAndBegin(ResolveHandcraftedLevel(ProcessedLevelIndex));
         }
 
         public void RestartLevel()
@@ -218,14 +167,10 @@ namespace SerapKeremGameKit._Managers
         public void LoadLevel(int levelNumber)
         {
             TerminateCurrentLevel();
-            levelNumber = ProceduralLevelUtility.ClampLevelNumber(levelNumber);
+            levelNumber = ClampLevel(levelNumber);
             ActiveLevelNumber = levelNumber;
             ProcessedLevelIndex = levelNumber;
-
-            if (ShouldUseProceduralLevel(levelNumber))
-                InstantiateProceduralAndBegin(levelNumber);
-            else
-                InstantiateAndBegin(ResolveHandcraftedLevel(levelNumber));
+            InstantiateAndBegin(ResolveHandcraftedLevel(levelNumber));
         }
 
         public void CleanCurrentLevel()
@@ -317,21 +262,13 @@ namespace SerapKeremGameKit._Managers
 
         public Level GetLevelByNumber(int levelNumber)
         {
-            levelNumber = ProceduralLevelUtility.ClampLevelNumber(levelNumber);
-
-            if (ProceduralLevelUtility.IsHandcraftedLevel(levelNumber))
-            {
-                var handcrafted = ResolveHandcraftedLevel(levelNumber);
-                if (handcrafted != null)
-                    return handcrafted;
-            }
-
-            return ResolveProceduralTemplate();
+            levelNumber = ClampLevel(levelNumber);
+            return ResolveHandcraftedLevel(levelNumber);
         }
 
         public bool IsCurrentLevelProcedural()
         {
-            return ShouldUseProceduralLevel(ProcessedLevelIndex);
+            return false;
         }
 
         #region Utility & Validation Methods

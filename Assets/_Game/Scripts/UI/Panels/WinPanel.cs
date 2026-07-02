@@ -301,20 +301,21 @@ namespace _Game.UI
             if (_pendingSequence != null && _pendingSequence.IsActive())
                 return;
 
-            if (_coinFly != null && _totalCoinTarget != null && _coinText != null && _totalCoinText != null)
-            {
-                long startAmount = 0;
-                long.TryParse(_totalCoinText.text, out startAmount);
-                _pendingSequence = _coinFly.AnimateAdd(_totalCoinText, _coinText.rectTransform, _totalCoinTarget, startAmount, _pendingReward);
-                if (_pendingSequence != null)
-                {
-                    _pendingSequence.SetAutoKill(true).SetLink(gameObject, LinkBehaviour.KillOnDestroy).OnComplete(() =>
-                    {
-                        GameUIManager.Instance?.ProceedNextLevelAfterReward(_pendingReward);
-                    });
-                    return;
-                }
-            }
+            // Coin fly animation disabled (no CoinPool in the scene → it logged an error). Proceed directly.
+            // if (_coinFly != null && _totalCoinTarget != null && _coinText != null && _totalCoinText != null)
+            // {
+            //     long startAmount = 0;
+            //     long.TryParse(_totalCoinText.text, out startAmount);
+            //     _pendingSequence = _coinFly.AnimateAdd(_totalCoinText, _coinText.rectTransform, _totalCoinTarget, startAmount, _pendingReward);
+            //     if (_pendingSequence != null)
+            //     {
+            //         _pendingSequence.SetAutoKill(true).SetLink(gameObject, LinkBehaviour.KillOnDestroy).OnComplete(() =>
+            //         {
+            //             GameUIManager.Instance?.ProceedNextLevelAfterReward(_pendingReward);
+            //         });
+            //         return;
+            //     }
+            // }
 
             GameUIManager.Instance?.ProceedNextLevelAfterReward(_pendingReward);
         }

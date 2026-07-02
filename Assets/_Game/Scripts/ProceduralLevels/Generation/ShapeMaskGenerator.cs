@@ -9,12 +9,19 @@ namespace _Game.ProceduralLevels
         public static bool[,] CreateMask(ShapeType shape, int gridSize)
         {
             int size = Mathf.Max(7, gridSize);
-            var mask = new bool[size, size];
-            float center = (size - 1) * 0.5f;
-            float scale = 2f / size;
 
-            for (int y = 0; y < size; y++)
+            var bitmap = GetBitmap(shape);
+            bool[,] mask;
+            if (bitmap != null)
             {
+                mask = SampleBitmap(bitmap, size);
+            }
+            else
+            {
+                mask = new bool[size, size];
+                float center = (size - 1) * 0.5f;
+                float scale = 2f / size;
+                for (int y = 0; y < size; y++)
                 for (int x = 0; x < size; x++)
                 {
                     float nx = (x - center) * scale;
@@ -26,6 +33,152 @@ namespace _Game.ProceduralLevels
             EnsureMinimumCells(mask, 12);
             return mask;
         }
+
+        /// <summary>Scales a hand-drawn silhouette bitmap (rows[0] = top, '#' = filled) to fit an
+        /// N×N mask, aspect-preserved and centred. Nearest-neighbour so it works at any grid size.</summary>
+        static bool[,] SampleBitmap(string[] rows, int size)
+        {
+            int h = rows.Length;
+            int w = 0;
+            foreach (var r in rows) w = Mathf.Max(w, r.Length);
+            var mask = new bool[size, size];
+            if (w == 0 || h == 0) return mask;
+
+            float scale = Mathf.Min((float)size / w, (float)size / h) * 0.96f;
+            float offx = (size - w * scale) * 0.5f;
+            float offy = (size - h * scale) * 0.5f;
+
+            for (int ty = 0; ty < size; ty++)
+            for (int tx = 0; tx < size; tx++)
+            {
+                float u = (tx - offx) / scale;
+                float v = (ty - offy) / scale;
+                if (u < 0f || u >= w || v < 0f || v >= h) continue;
+                int sc = (int)u, sr = (int)v;
+                var row = rows[sr];
+                bool filled = sc < row.Length && row[sc] == '#';
+                mask[tx, size - 1 - ty] = filled; // bitmap top (row 0) -> highest y (upright)
+            }
+            return mask;
+        }
+
+        static string[] GetBitmap(ShapeType shape)
+        {
+            switch (shape)
+            {
+                case ShapeType.Trophy: return Trophy;
+                case ShapeType.Anchor: return Anchor;
+                case ShapeType.Dog: return Dog;
+                case ShapeType.Duck: return Duck;
+                case ShapeType.Cup: return Cup;
+                case ShapeType.Car: return Car;
+                default: return null;
+            }
+        }
+
+        static readonly string[] Trophy =
+        {
+            "..###########..",
+            ".#############.",
+            "###############",
+            "###############",
+            "###############",
+            ".#############.",
+            ".#############.",
+            "..###########..",
+            "...#########...",
+            ".....#####.....",
+            ".....#####.....",
+            ".....#####.....",
+            "....#######....",
+            "...#########...",
+            "..###########..",
+        };
+
+        static readonly string[] Anchor =
+        {
+            ".....###.....",
+            "....##.##....",
+            "....##.##....",
+            "....##.##....",
+            ".....###.....",
+            "...#######...",
+            ".....###.....",
+            ".....###.....",
+            ".....###.....",
+            ".....###.....",
+            ".#...###...#.",
+            ".##..###..##.",
+            ".###.###.###.",
+            "..#########..",
+            "...#######...",
+            ".....###.....",
+        };
+
+        static readonly string[] Duck =
+        {
+            "..........####...",
+            ".........######..",
+            ".........##.###..",
+            ".........######..",
+            "........#######..",
+            "....############.",
+            "..##############.",
+            ".###############.",
+            ".###############.",
+            ".##############..",
+            "..############...",
+            "...##########....",
+            "....#.....#......",
+            "....#.....#......",
+        };
+
+        static readonly string[] Dog =
+        {
+            "...........###...",
+            "..........#####..",
+            ".........#######.",
+            "........########.",
+            ".#####..########.",
+            "#######.########.",
+            "################.",
+            "################.",
+            ".###############.",
+            ".##############..",
+            ".####.....####...",
+            ".####.....####...",
+            ".####.....####...",
+            ".###.......###...",
+        };
+
+        static readonly string[] Cup =
+        {
+            "..#########..",
+            ".###########.",
+            ".###########.",
+            ".###########.",
+            "..#########..",
+            "...#######...",
+            ".....###.....",
+            ".....###.....",
+            "...#######...",
+            "..#########..",
+        };
+
+        static readonly string[] Car =
+        {
+            "......########....",
+            ".....##########...",
+            "....############..",
+            "..################",
+            "##################",
+            "##################",
+            "##################",
+            ".################.",
+            "..###......###....",
+            "..###......###....",
+            "..###......###....",
+        };
 
         static bool IsInside(ShapeType shape, float x, float y)
         {
@@ -118,26 +271,36 @@ namespace _Game.ProceduralLevels
 
         static bool IsButterfly(float x, float y)
         {
-            float left = ((x + 0.35f) * (x + 0.35f) + y * y);
-            float right = ((x - 0.35f) * (x - 0.35f) + y * y);
-            bool wings = (left <= 0.35f || right <= 0.35f) && Mathf.Abs(y) <= 0.55f;
-            bool body = Mathf.Abs(x) <= 0.08f && Mathf.Abs(y) <= 0.65f;
-            return wings || body;
+            bool body = Mathf.Abs(x) <= 0.08f && y >= -0.5f && y <= 0.6f;
+            bool ulL = (x + 0.30f) * (x + 0.30f) + (y - 0.26f) * (y - 0.26f) <= 0.16f;
+            bool llL = (x + 0.24f) * (x + 0.24f) + (y + 0.30f) * (y + 0.30f) <= 0.10f;
+            bool ulR = (x - 0.30f) * (x - 0.30f) + (y - 0.26f) * (y - 0.26f) <= 0.16f;
+            bool llR = (x - 0.24f) * (x - 0.24f) + (y + 0.30f) * (y + 0.30f) <= 0.10f;
+            bool leftWing = (ulL || llL) && x <= -0.02f;
+            bool rightWing = (ulR || llR) && x >= 0.02f;
+            bool antennae = Mathf.Abs(Mathf.Abs(x) - 0.13f) <= 0.03f && y > 0.6f && y <= 0.85f;
+            return body || leftWing || rightWing || antennae;
         }
 
         static bool IsFish(float x, float y)
         {
-            bool body = x * x * 1.2f + y * y * 0.9f <= 0.45f && x > -0.55f;
-            bool tail = x < -0.15f && Mathf.Abs(y) <= 0.45f - Mathf.Abs(x + 0.15f) * 0.8f;
+            bool body = (x - 0.05f) * (x - 0.05f) * 1.3f + y * y * 2.4f <= 0.42f;
+            bool tail = x >= -0.72f && x <= -0.30f && Mathf.Abs(y) <= (-0.30f - x) * 1.1f;
             return body || tail;
         }
 
         static bool IsCat(float x, float y)
         {
-            bool face = x * x + y * y <= 0.42f;
-            bool earL = (x + 0.28f) * (x + 0.28f) + (y - 0.35f) * (y - 0.35f) <= 0.06f;
-            bool earR = (x - 0.28f) * (x - 0.28f) + (y - 0.35f) * (y - 0.35f) <= 0.06f;
-            return face || earL || earR;
+            bool face = x * x + (y + 0.10f) * (y + 0.10f) <= 0.42f;
+            return face || IsCatEar(x, y, -0.34f) || IsCatEar(x, y, 0.34f);
+        }
+
+        // Pointy triangular ear that narrows to a tip above the face.
+        static bool IsCatEar(float x, float y, float cx)
+        {
+            if (y < 0.24f || y > 0.92f) return false;
+            float t = (0.92f - y) / (0.92f - 0.24f); // 1 at base, 0 at tip
+            return Mathf.Abs(x - cx) <= 0.28f * t;
         }
 
         static bool IsTree(float x, float y)
@@ -158,12 +321,15 @@ namespace _Game.ProceduralLevels
 
         static bool IsFlower(float x, float y)
         {
-            float r = Mathf.Sqrt(x * x + y * y);
-            float petals = 0.28f + 0.18f * Mathf.Cos(6f * Mathf.Atan2(y, x));
-            bool bloom = r <= petals && r >= 0.08f;
-            bool center = r <= 0.12f;
-            bool stem = Mathf.Abs(x) <= 0.08f && y >= -0.8f && y < -0.1f;
-            return bloom || center || stem;
+            // Bloom sits in the upper half; stem + leaves below.
+            float by = y - 0.18f;
+            float r = Mathf.Sqrt(x * x + by * by);
+            float petals = 0.34f + 0.20f * Mathf.Cos(6f * Mathf.Atan2(by, x));
+            bool bloom = r <= petals;
+            bool stem = Mathf.Abs(x) <= 0.07f && y >= -0.82f && y < 0f;
+            bool leaf = (x - 0.18f) * (x - 0.18f) * 2.0f + (y + 0.35f) * (y + 0.35f) * 3.0f <= 0.06f
+                     || (x + 0.18f) * (x + 0.18f) * 2.0f + (y + 0.35f) * (y + 0.35f) * 3.0f <= 0.06f;
+            return bloom || stem || leaf;
         }
 
         static bool IsHexagon(float x, float y)
